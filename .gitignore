@@ -1,0 +1,24 @@
+# Build output and release binaries belong in GitHub Releases.
+target/
+/dist/*/
+*.tmp
+__pycache__/
+*.py[cod]
+
+# Signing keys and local credentials must never enter the repository.
+*.pem
+*.key
+.env
+.env.*
+.neramit-release/
+
+# Local logo explorations and previous artwork exports.
+/tools/logo/*
+!/tools/logo/export_beaver.py
+!/tools/logo/export_beaver_over_shoulder.py
+!/tools/logo/neramit-planner-logo-1024.png
+!/tools/logo/neramit-planner-beaver-1024.png
+!/tools/logo/beaver-poses-20261107/
+/tools/logo/beaver-poses-20261107/*
+!/tools/logo/beaver-poses-20261107/02-over-shoulder-1024.png
+!/tools/logo/beaver-poses-20261107/02-over-shoulder-prompt.txt

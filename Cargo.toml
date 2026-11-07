@@ -1,0 +1,35 @@
+[package]
+name = "neramit-planner"
+version = "1.0.0"
+authors = ["BiGByte Studio"]
+edition = "2021"
+description = "Neramit Planner - offline desktop project scheduling (Gantt) application"
+publish = false
+build = "build.rs"
+
+[[bin]]
+name = "NeramitPlanner"
+path = "src/main.rs"
+
+[dependencies]
+eframe = { version = "=0.37.0", default-features = false, features = ["glow", "default_fonts"] }
+egui_extras = { version = "=0.37.0", default-features = false }
+chrono = { version = "0.4.41", default-features = false, features = ["clock", "std", "serde"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+quick-xml = "0.37"
+raw-window-handle = "0.6"
+rfd = "0.15"
+rust_xlsxwriter = { version = "0.100", default-features = false }
+ttf-parser = "0.25"
+miniz_oxide = "0.8"
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging", "Win32_System_Com", "Win32_System_Registry", "Win32_Networking_WinHttp", "Win32_Security_Cryptography", "Win32_Globalization", "Win32_System_ProcessStatus", "Win32_System_Threading", "Win32_Storage_FileSystem"] }
+
+[build-dependencies]
+winresource = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
