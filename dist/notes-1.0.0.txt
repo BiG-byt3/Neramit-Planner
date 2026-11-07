@@ -1,0 +1,26 @@
+Neramit Planner 1.0.0 - first release
+- Offline Windows project planning with a Gantt chart, task and resource sheets, calendars, task boards, baselines and progress tracking.
+- Open and save project schedules in .neramit, .mpp and XML formats; export reports to PDF, Excel, CSV and PNG.
+- English and Thai interfaces, Thai holidays, Office and Construction work week presets, baht currency and Thai money text.
+- S-Curve reports compare cumulative planned and actual progress, weighted by cost, work or duration.
+- Import BOQ data from Excel or CSV as a task outline with fixed costs; recognize Thai headers and two-row headings.
+- Payment schedules support milestone installments, advances, retention, payment status and cash-in versus cost-out reporting.
+- Print company and project manager details, status dates, and Prepared / Checked / Approved signature boxes.
+- Connect supported local AI assistants through MCP for project editing, BOQ import and payment schedules.
+- Single executable or a per-user installer with no administrator rights required.
+- Over-the-shoulder engraved beaver icon on the program's green background.
+- Check for signed updates from Help > Check for Updates; update both installed and portable copies from inside the program, with save prompts and executable rollback protection.
+
+---
+Neramit Planner 1.0.0 - รุ่นแรก
+- โปรแกรมวางแผนโครงการบน Windows แบบออฟไลน์ มี Gantt Chart ตารางงานและทรัพยากร ปฏิทิน บอร์ดงาน แผนฐาน และการติดตามความก้าวหน้า
+- เปิดและบันทึกแผนงานในรูปแบบ .neramit .mpp และ XML พร้อมส่งออกรายงานเป็น PDF Excel CSV และ PNG
+- ส่วนติดต่อภาษาอังกฤษและไทย วันหยุดไทย แบบสำเร็จรูปวันทำงานสำนักงานและไซต์ก่อสร้าง สกุลเงินบาท และยอดเงินเป็นตัวหนังสือ
+- รายงาน S-Curve เปรียบเทียบผลงานตามแผนสะสมกับผลงานจริง ถ่วงน้ำหนักตามค่างาน ชั่วโมงงาน หรือระยะเวลา
+- นำเข้า BOQ จาก Excel หรือ CSV เป็นโครงร่างงานพร้อมต้นทุนคงที่ รองรับหัวตารางภาษาไทยและหัวตารางสองแถว
+- งวดงานและงวดเงินรองรับการผูกกับเหตุการณ์สำคัญ เงินล่วงหน้า เงินประกันผลงาน สถานะการจ่าย และรายงานเงินรับเทียบต้นทุน
+- งานพิมพ์แสดงชื่อบริษัท ผู้จัดการโครงการ วันที่ข้อมูล และช่องลงนามผู้จัดทำ ผู้ตรวจสอบ และผู้อนุมัติ
+- เชื่อมต่อผู้ช่วย AI ในเครื่องที่รองรับผ่าน MCP เพื่อแก้ไขโครงการ นำเข้า BOQ และจัดการงวดงานงวดเงิน
+- ใช้ไฟล์โปรแกรมเดียวหรือชุดติดตั้งสำหรับผู้ใช้ปัจจุบัน โดยไม่ต้องใช้สิทธิ์ผู้ดูแลระบบ
+- ไอคอนบีเวอร์หันมองข้ามไหล่ลายเส้นแกะสลักบนพื้นสีเขียวของโปรแกรม
+- ตรวจอัปเดตที่ Help > Check for Updates และอัปเดตได้จากในโปรแกรมทั้งรุ่นติดตั้งและ Portable พร้อมตรวจลายเซ็น ถามบันทึกงาน และเก็บโปรแกรมรุ่นเดิมสำหรับกู้คืน

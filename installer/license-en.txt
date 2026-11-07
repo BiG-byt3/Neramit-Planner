@@ -1,0 +1,25 @@
+Neramit Planner - End User License Agreement
+Copyright (c) 2026 BiGByte Studio. All rights reserved.
+
+Please read this agreement carefully before installing Neramit Planner (the "Software"). By installing or using the Software you agree to these terms. If you do not agree, select "I do not accept the agreement" and do not install the Software.
+
+1. License
+BiGByte Studio grants you a non-exclusive, non-transferable license to install and use the Software on computers that you own or control.
+
+2. Restrictions
+You may not sell, rent, lease or sublicense the Software, or remove its copyright notices.
+
+3. Your files and privacy
+Projects you make with the Software belong to you. The Software works offline and does not send your files anywhere. It connects to the internet only when you click "Check for Updates", to read update information from GitHub.
+
+4. Open-source components
+The Software includes open-source components that are licensed under their own terms. See Help > About > Open-source licenses.
+
+5. No warranty
+The Software is provided "as is", without warranty of any kind. Keep backups of important project files.
+
+6. Limitation of liability
+To the extent permitted by law, BiGByte Studio is not liable for any damage arising from the use of, or inability to use, the Software.
+
+7. Updates
+These terms also apply to updates of the Software.

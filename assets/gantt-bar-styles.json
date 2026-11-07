@@ -1,0 +1,2085 @@
+[
+ {
+  "name": "Task",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     138,
+     187,
+     237
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Split",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     59,
+     135,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "GroupBySummary",
+    "not": true
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     99,
+     99,
+     99
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Summary",
+  "show_for": [
+   {
+    "cat": "Summary",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "middle": {
+    "shape": "LineTop",
+    "pattern": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Project Summary",
+  "show_for": [
+   {
+    "cat": "ProjectSummary",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     182,
+     182,
+     182
+    ]
+   },
+   "middle": {
+    "shape": "LineTop",
+    "pattern": "Solid",
+    "color": [
+     182,
+     182,
+     182
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     182,
+     182,
+     182
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Group By Summary",
+  "show_for": [
+   {
+    "cat": "GroupBySummary",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "middle": {
+    "shape": "Middle",
+    "pattern": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Name",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Rolled Up Task",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "RolledUp",
+    "not": false
+   },
+   {
+    "cat": "Summary",
+    "not": true
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     138,
+     187,
+     237
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Rolled Up Split",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "RolledUp",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Summary",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     59,
+     135,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Rolled Up Progress",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "RolledUp",
+    "not": false
+   },
+   {
+    "cat": "Summary",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "CompleteThrough",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Middle",
+    "pattern": "Solid",
+    "color": [
+     59,
+     135,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Rolled Up Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "RolledUp",
+    "not": false
+   },
+   {
+    "cat": "Summary",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Inactive Task",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Hollow",
+    "color": [
+     221,
+     221,
+     221
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Inactive Split",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     127,
+     127,
+     127
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Inactive Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     221,
+     221,
+     221
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Inactive Summary",
+  "show_for": [
+   {
+    "cat": "Summary",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     221,
+     221,
+     221
+    ]
+   },
+   "middle": {
+    "shape": "LineTop",
+    "pattern": "Solid",
+    "color": [
+     221,
+     221,
+     221
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     221,
+     221,
+     221
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Manual Task",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     116,
+     204,
+     212
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Split",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Duration-only",
+  "show_for": [
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   },
+   {
+    "cat": "Milestone",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     255,
+     255,
+     255
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     116,
+     204,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     255,
+     255,
+     255
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Manual Summary Rollup",
+  "show_for": [
+   {
+    "cat": "Summary",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Bottom",
+    "pattern": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Task (Warning)",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     116,
+     204,
+     212
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Split (Warning)",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Milestone (Warning)",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Manual Summary Rollup (Warning)",
+  "show_for": [
+   {
+    "cat": "Summary",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Bottom",
+    "pattern": "Solid",
+    "color": [
+     255,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Manual Summary",
+  "show_for": [
+   {
+    "cat": "Summary",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "middle": {
+    "shape": "LineTop",
+    "pattern": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   },
+   "end": {
+    "shape": "Line",
+    "kind": "Solid",
+    "color": [
+     84,
+     84,
+     84
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Start-only",
+  "show_for": [
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   },
+   {
+    "cat": "Milestone",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Start",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Finish-only",
+  "show_for": [
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   },
+   {
+    "cat": "Milestone",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Duration-only Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     206,
+     217,
+     232
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Start-only Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Start",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     206,
+     217,
+     232
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Start",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Finish-only Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Placeholder",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     206,
+     217,
+     232
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "*Rolled Up Manual Task",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "RolledUp",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   },
+   {
+    "cat": "Summary",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     116,
+     204,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "External Tasks",
+  "show_for": [
+   {
+    "cat": "External",
+    "not": false
+   },
+   {
+    "cat": "Milestone",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     198,
+     198,
+     198
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "External Milestone",
+  "show_for": [
+   {
+    "cat": "Milestone",
+    "not": false
+   },
+   {
+    "cat": "External",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Finish",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "Diamond",
+    "kind": "Solid",
+    "color": [
+     198,
+     198,
+     198
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "Finish",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Deadline",
+  "show_for": [],
+  "row": 1,
+  "from": "Deadline",
+  "to": "Deadline",
+  "bar": {
+   "start": {
+    "shape": "ArrowDown",
+    "kind": "Solid",
+    "color": [
+     141,
+     190,
+     76
+    ]
+   },
+   "middle": {
+    "shape": "None",
+    "pattern": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Critical",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Full",
+    "pattern": "Solid",
+    "color": [
+     247,
+     138,
+     136
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "ResourceNames",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Critical Split",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "Critical",
+    "not": false
+   },
+   {
+    "cat": "Split",
+    "not": false
+   },
+   {
+    "cat": "Active",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "Start",
+  "to": "Finish",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "LineBottom",
+    "pattern": "Vertical",
+    "color": [
+     247,
+     138,
+     136
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Progress",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": true
+   }
+  ],
+  "row": 1,
+  "from": "ActualStart",
+  "to": "CompleteThrough",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Middle",
+    "pattern": "Solid",
+    "color": [
+     59,
+     135,
+     212
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ },
+ {
+  "name": "Manual Progress",
+  "show_for": [
+   {
+    "cat": "Normal",
+    "not": false
+   },
+   {
+    "cat": "ManuallyScheduled",
+    "not": false
+   }
+  ],
+  "row": 1,
+  "from": "ActualStart",
+  "to": "CompleteThrough",
+  "bar": {
+   "start": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   },
+   "middle": {
+    "shape": "Middle",
+    "pattern": "Solid",
+    "color": [
+     43,
+     163,
+     173
+    ]
+   },
+   "end": {
+    "shape": "None",
+    "kind": "Solid",
+    "color": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  "text": [
+   "None",
+   "None",
+   "None",
+   "None",
+   "None"
+  ]
+ }
+]

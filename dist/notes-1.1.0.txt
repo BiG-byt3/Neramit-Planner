@@ -1,0 +1,28 @@
+Neramit Planner 1.1.0 - for Thai users
+- Add Thai holidays: public holidays and substitution days for every year of the project (Buddhist holidays built in for 2025-2027; add other years in thai-holidays.txt)
+- Work week presets: Office (Mon-Fri), Construction site (Mon-Sat)
+- New S-Curve report: cumulative planned vs actual progress, weighted by cost, work or duration, with period and phase tables you can copy to Excel
+- New plans use baht for Thai users; money follows the project's currency options
+- Sort by name in Thai dictionary order
+- Excel export uses Leelawadee UI for Thai text
+- Copy Picture / Save Picture (View and Report tabs): the view as an image for LINE, e-mail or documents, or a PNG file
+- Printing and PDF: company, project manager and "status as of" line, full printed date, and Prepared / Checked / Approved signature boxes
+- Cost reports show the total in Thai words (baht text)
+- Import BOQ (Project tab): a bill of quantities in Excel or CSV becomes the task outline with amounts as fixed cost; Thai headers (ปร.4, two-row headers) are found automatically and can be changed
+- Payment Schedule (Project tab, Report > Costs): installments tied to milestones, advance payment and retention, status, net amounts and money in against cost out; saved in .neramit, .mpp and .xml
+- MCP: import_boq, payment_schedule and set_payment_schedule
+
+---
+Neramit Planner 1.1.0 - สำหรับผู้ใช้ไทย
+- เพิ่มวันหยุดไทย: วันหยุดนักขัตฤกษ์และวันหยุดชดเชยทุกปีตลอดช่วงโครงการ (มีวันหยุดทางพุทธศาสนาปี 2568-2570 ในตัว ปีอื่นเพิ่มได้ในไฟล์ thai-holidays.txt)
+- แบบสำเร็จรูปวันทำงาน: สำนักงาน (จ.-ศ.) และไซต์ก่อสร้าง (จ.-ส.)
+- รายงานใหม่ กราฟ S-Curve: ผลงานตามแผนสะสมเทียบผลงานจริง ถ่วงน้ำหนักตามค่างาน ชั่วโมงงาน หรือระยะเวลา พร้อมตารางรายงวดและรายหมวดงานที่คัดลอกไป Excel ได้
+- โครงการใหม่ของผู้ใช้ไทยใช้สกุลเงินบาท และเงินแสดงตามตัวเลือกสกุลเงินของโครงการ
+- เรียงตามชื่อตามลำดับพจนานุกรมไทย
+- ส่งออก Excel ที่มีภาษาไทยใช้ฟอนต์ Leelawadee UI
+- คัดลอก/บันทึกเป็นรูปภาพ (แท็บมุมมอง และแท็บรายงาน): มุมมองบนจอเป็นรูปภาพ วางใน LINE อีเมล หรือเอกสาร หรือบันทึกเป็น PNG
+- งานพิมพ์และ PDF: บรรทัดชื่อบริษัท ผู้จัดการโครงการ ข้อมูล ณ วันที่ วันที่พิมพ์แบบเต็ม และช่องลงนาม ผู้จัดทำ/ผู้ตรวจสอบ/ผู้อนุมัติ
+- รายงานต้นทุนแสดงยอดเงินเป็นตัวหนังสือ (บาทถ้วน)
+- นำเข้า BOQ (แท็บโครงการ): บัญชีปริมาณงาน Excel หรือ CSV เป็นโครงร่างงาน พร้อมจำนวนเงินเป็นต้นทุน หาหัวตารางไทย (ปร.4 หัวตาราง 2 แถว) ให้เองและแก้ได้
+- งวดงาน/งวดเงิน (แท็บโครงการ และรายงาน > ต้นทุน): งวดผูกกับเหตุการณ์สำคัญ เงินล่วงหน้า เงินประกันผลงาน สถานะ ยอดสุทธิ และเงินรับเทียบต้นทุน บันทึกใน .neramit .mpp และ .xml
+- MCP: import_boq, payment_schedule และ set_payment_schedule

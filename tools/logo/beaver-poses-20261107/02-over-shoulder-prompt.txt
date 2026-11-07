@@ -1,0 +1,11 @@
+Generation mode: built-in image_gen
+Reference: ../neramit-planner-beaver-1024.png
+
+Use case: logo-brand / pose variant.
+Asset: one square application icon for Neramit Planner.
+Input reference: the provided existing beaver icon defines the SAME recognizable beaver character, antique natural-history engraving style, black ink and warm ivory fur, fine directional hatching, and official flat green background.
+Primary change: create a distinct new pose. The beaver's upper body is shown in LEFT SIDE PROFILE, its torso angled left, but its head turns BACK over its shoulder toward the viewer. Show the shoulder/back curve as a clear sculptural silhouette, with an attentive curious expression. Head at upper center-right, visible rounded ear, broad muzzle, dark nose, small whiskers and a readable pair of beaver incisors. It must read as a beaver turning its head over its shoulder, not a mirrored copy of the original pose. Natural animal anatomy and calm capable character.
+Composition: large bust portrait, head and upper torso occupy about 86% of the square, lower torso cropped flush with bottom canvas. Keep all ears and muzzle inside the tile with modest breathing room. Prioritize strong small-size icon readability.
+Style: sophisticated Victorian wood engraving / copperplate black ink lines on warm ivory, precise fur hatch marks and high contrast. No photorealism, no 3D, no cartoon simplification.
+Background: a completely uniform opaque sRGB #2B8238 / RGB(43,130,56) edge-to-edge full square. No rounded corners at this stage; export handles masking. No background texture, gradients, glow or shadow.
+Constraints: one single animal, no clothes, no tools, no branches, no objects, no letters or words, no watermark, no border, no collage or presentation mockup. Output one clean finished square icon.
