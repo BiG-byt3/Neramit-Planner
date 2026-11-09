@@ -20,12 +20,12 @@ use windows_sys::Win32::Foundation::*;
 use windows_sys::Win32::Graphics::Gdi::*;
 use windows_sys::Win32::Storage::FileSystem::ReplaceFileW;
 use windows_sys::Win32::System::Com::{CoInitializeEx, CoTaskMemFree};
-use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
+use windows_sys::Win32::System::LibraryLoader::{GetModuleHandleW, LoadLibraryW};
 use windows_sys::Win32::System::Registry::{RegGetValueW, HKEY_CURRENT_USER, RRF_RT_REG_SZ};
 use windows_sys::Win32::System::Threading::{OpenProcess, WaitForSingleObject, PROCESS_SYNCHRONIZE};
 use windows_sys::Win32::UI::Controls::{InitCommonControlsEx, ICC_PROGRESS_CLASS, INITCOMMONCONTROLSEX, PBM_SETPOS, PBM_SETRANGE32};
 use windows_sys::Win32::UI::Input::KeyboardAndMouse::{EnableWindow, SetFocus};
-use windows_sys::Win32::UI::Shell::{SHBrowseForFolderW, SHGetPathFromIDListW, BROWSEINFOW};
+use windows_sys::Win32::UI::Shell::{DefSubclassProc, SHBrowseForFolderW, SHGetPathFromIDListW, SetWindowSubclass, BROWSEINFOW};
 use windows_sys::Win32::UI::WindowsAndMessaging::*;
 
 const APP: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/NeramitPlanner.exe.deflate"));
@@ -33,6 +33,9 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 const UNINSTALL_KEY: &str = r"Software\Microsoft\Windows\CurrentVersion\Uninstall\NeramitPlanner";
 
 const WM_PROGRESS: u32 = WM_APP + 1;
+// edit control messages (shared by the rich edit control)
+const EM_SETSEL: u32 = 0x00B1;
+const EM_SETRECTNP: u32 = 0x00B4;
 const WM_DONE: u32 = WM_APP + 2;
 
 // pages
@@ -58,6 +61,82 @@ const ID_DECLINE: usize = 23;
 
 const LICENSE_EN: &str = include_str!("../license-en.txt");
 const LICENSE_TH: &str = include_str!("../license-th.txt");
+
+/// The license text files use a small markup: "# " title, "## " heading, "- " bullet; any other
+/// line is a paragraph. As plain text (no rich edit control) the markers are dropped.
+fn license_plain(src: &str) -> String {
+    src.lines()
+        .map(|l| {
+            if let Some(h) = l.strip_prefix("## ").or_else(|| l.strip_prefix("# ")) {
+                h.to_string()
+            } else if let Some(b) = l.strip_prefix("- ") {
+                format!("  \u{2022} {b}")
+            } else {
+                l.to_string()
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
+/// The license as RTF for the rich edit control: green bold headings, bullets and paragraph
+/// spacing. Thai uses Leelawadee UI, whose Thai marks have room above and below the line.
+fn license_rtf(src: &str, thai: bool) -> String {
+    fn esc(s: &str) -> String {
+        let mut o = String::with_capacity(s.len());
+        for c in s.chars() {
+            match c {
+                '\\' | '{' | '}' => {
+                    o.push('\\');
+                    o.push(c);
+                }
+                c if (c as u32) < 0x80 => o.push(c),
+                c => {
+                    let mut b = [0u16; 2];
+                    for u in c.encode_utf16(&mut b) {
+                        o.push_str(&format!("\\u{}?", *u as i16));
+                    }
+                }
+            }
+        }
+        o
+    }
+    let (font, size) = (thai as u8, 18);
+    let mut o = format!(
+        "{{\\rtf1\\ansi\\deff0{{\\fonttbl{{\\f0\\fnil Segoe UI;}}{{\\f1\\fnil Leelawadee UI;}}}}\
+         {{\\colortbl;\\red32\\green32\\blue32;\\red16\\green124\\blue65;\\red110\\green110\\blue110;}}\\f{font}\\fs{size}\\cf1\n"
+    );
+    let mut lines = src.lines().filter(|l| !l.trim().is_empty()).peekable();
+    let mut first = true;
+    while let Some(l) = lines.next() {
+        let next_is_bullet = lines.peek().is_some_and(|n| n.starts_with("- "));
+        if let Some(h) = l.strip_prefix("# ") {
+            o.push_str(&format!("\\pard\\sa20\\cf2\\b\\fs{} {}\\b0\\fs{size}\\cf1\\par\n", size + 4, esc(h)));
+        } else if let Some(h) = l.strip_prefix("## ") {
+            o.push_str(&format!("\\pard\\sb{}\\sa60\\keepn\\cf2\\b {}\\b0\\cf1\\par\n", if first { 0 } else { 200 }, esc(h)));
+        } else if let Some(b) = l.strip_prefix("- ") {
+            o.push_str(&format!("\\pard\\fi-200\\li400\\tx400\\sa{}\\bullet\\tab {}\\par\n", if next_is_bullet { 30 } else { 120 }, esc(b)));
+        } else if first {
+            // the copyright line under the title
+            o.push_str(&format!("\\pard\\sa160\\cf3 {}\\cf1\\par\n", esc(l)));
+        } else {
+            o.push_str(&format!("\\pard\\sa{} {}\\par\n", if next_is_bullet { 60 } else { 120 }, esc(l)));
+        }
+        first = l.starts_with("# ");
+    }
+    o.push('}');
+    o
+}
+
+/// The license text keeps the arrow and page keys for scrolling, but Tab moves on and Enter / Esc
+/// reach the wizard buttons (a rich edit control would keep Tab to itself).
+unsafe extern "system" fn license_keys(h: HWND, msg: u32, wp: WPARAM, lp: LPARAM, _id: usize, _data: usize) -> LRESULT {
+    let r = DefSubclassProc(h, msg, wp, lp);
+    if msg == WM_GETDLGCODE {
+        return r & !((DLGC_WANTTAB | DLGC_WANTALLKEYS) as LRESULT);
+    }
+    r
+}
 
 fn wide(s: &str) -> Vec<u16> {
     s.encode_utf16().chain(std::iter::once(0)).collect()
@@ -287,6 +366,8 @@ struct Ui {
     cancel: HWND,
     folder_edit: HWND,
     accept: HWND,
+    /// the license text; paint() frames it
+    license: HWND,
     chk_desktop: HWND,
     chk_start: HWND,
     chk_mpp: HWND,
@@ -610,6 +691,15 @@ unsafe fn paint(u: &Ui) {
             DrawIconEx(dc, rc.right - px(60), px(8), u.icon, px(48), px(48), 0, std::ptr::null_mut(), DI_NORMAL);
         }
     }
+    if page == LICENSE {
+        // a thin frame one pixel outside the license text (it has no border of its own)
+        let mut r: RECT = std::mem::zeroed();
+        GetWindowRect(u.license, &mut r);
+        MapWindowPoints(std::ptr::null_mut(), u.hwnd, &mut r as *mut RECT as *mut POINT, 2);
+        let frame = CreateSolidBrush(0x00D5D5D5);
+        FrameRect(dc, &RECT { left: r.left - 1, top: r.top - 1, right: r.right + 1, bottom: r.bottom + 1 }, frame);
+        DeleteObject(frame as HGDIOBJ);
+    }
     DeleteObject(line as HGDIOBJ);
     SelectObject(dc, u.font as HGDIOBJ);
     SetTextColor(dc, 0x00808080);
@@ -704,6 +794,10 @@ unsafe fn qa_shots(u: &Ui, spec: &str) {
             done(u);
         } else {
             show_page(page);
+            // NERAMIT_SETUP_LICENSE_END=1: the license page scrolled to the end of the text
+            if page == LICENSE && std::env::var_os("NERAMIT_SETUP_LICENSE_END").is_some() {
+                SendMessageW(u.license, WM_VSCROLL, SB_BOTTOM as usize, 0);
+            }
         }
         let mut m: MSG = std::mem::zeroed();
         // themed buttons fade between enabled and disabled: let the animation finish
@@ -838,28 +932,54 @@ unsafe fn run_wizard() {
         mk(
             "STATIC",
             t(
-                "Please read the following License Agreement. You must accept the terms of this agreement before continuing with the installation.",
-                "กรุณาอ่านข้อตกลงการใช้งานต่อไปนี้ คุณต้องยอมรับข้อตกลงก่อนจึงจะติดตั้งต่อได้",
+                "Please read the agreement below, then select \"I accept\" to continue.",
+                "กรุณาอ่านข้อตกลงด้านล่าง แล้วเลือก \"ฉันยอมรับข้อตกลง\" เพื่อติดตั้งต่อ",
             ),
             0,
             0,
             32,
             76,
             456,
-            34,
+            20,
             0,
             f,
         ),
         LICENSE,
     ));
-    let license_text = crlf(if thai() { LICENSE_TH } else { LICENSE_EN });
+    let license_src = if thai() { LICENSE_TH } else { LICENSE_EN };
     let es = (ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL) as u32 | WS_VSCROLL;
-    let license_box = mk("EDIT", "", tab | es, WS_EX_CLIENTEDGE, 32, 112, 456, 152, 0, f);
-    // set after the font, so the edit control measures the text (and shows its scroll bar)
-    set_text(license_box, &license_text);
+    // a rich edit control (bold headings, bullets); a plain edit control if it cannot be loaded.
+    // It has no border of its own: paint() draws a thin frame round it.
+    let rich = !LoadLibraryW(wide("Msftedit.dll").as_ptr()).is_null();
+    let license_box = mk(if rich { "RICHEDIT50W" } else { "EDIT" }, "", tab | es, 0, 33, 101, 454, 182, 0, f);
+    if rich {
+        const EM_SETBKGNDCOLOR: u32 = 0x0443;
+        const EM_SETTEXTEX: u32 = 0x0461;
+        #[repr(C)]
+        struct SetTextEx {
+            flags: u32,
+            codepage: u32,
+        }
+        SendMessageW(license_box, EM_SETBKGNDCOLOR, 0, 0x00FFFFFF);
+        let mut rtf = license_rtf(license_src, thai()).into_bytes();
+        rtf.push(0);
+        // the RTF is plain ASCII (other characters are \u escapes), so the ANSI code page reads it
+        let st = SetTextEx { flags: 0, codepage: 0 };
+        SendMessageW(license_box, EM_SETTEXTEX, &st as *const SetTextEx as WPARAM, rtf.as_ptr() as LPARAM);
+    } else {
+        // set after the font, so the edit control measures the text (and shows its scroll bar)
+        set_text(license_box, &crlf(&license_plain(license_src)));
+    }
+    // room between the text and the frame
+    let mut inner: RECT = std::mem::zeroed();
+    GetClientRect(license_box, &mut inner);
+    let inner = RECT { left: inner.left + s(12), top: inner.top + s(8), right: inner.right - s(10), bottom: inner.bottom - s(6) };
+    SendMessageW(license_box, EM_SETRECTNP, 0, &inner as *const RECT as LPARAM);
+    SendMessageW(license_box, EM_SETSEL, 0, 0);
+    SetWindowSubclass(license_box, Some(license_keys), 1, 0);
     controls.push((license_box, LICENSE));
-    let accept = mk("BUTTON", t("I &accept the agreement", "ฉัน&ยอมรับข้อตกลง"), tab | WS_GROUP | BS_AUTORADIOBUTTON as u32, 0, 32, 272, 456, 22, ID_ACCEPT, f);
-    let decline = mk("BUTTON", t("I &do not accept the agreement", "ฉัน&ไม่ยอมรับข้อตกลง"), BS_AUTORADIOBUTTON as u32, 0, 32, 296, 456, 22, ID_DECLINE, f);
+    let accept = mk("BUTTON", t("I &accept the agreement", "ฉัน&ยอมรับข้อตกลง"), tab | WS_GROUP | BS_AUTORADIOBUTTON as u32, 0, 32, 294, 220, 22, ID_ACCEPT, f);
+    let decline = mk("BUTTON", t("I &do not accept the agreement", "ฉัน&ไม่ยอมรับข้อตกลง"), BS_AUTORADIOBUTTON as u32, 0, 260, 294, 228, 22, ID_DECLINE, f);
     set_check(decline, true);
     controls.push((accept, LICENSE));
     controls.push((decline, LICENSE));
@@ -948,6 +1068,7 @@ unsafe fn run_wizard() {
         cancel,
         folder_edit,
         accept,
+        license: license_box,
         chk_desktop,
         chk_start,
         chk_mpp,

@@ -896,6 +896,8 @@ impl App {
     /// The app on an egui context (the window's, or a headless one in tests).
     pub fn with_ctx(ctx: &egui::Context, open: Option<PathBuf>) -> Self {
         crate::theme::install_fonts(ctx);
+        // list the PC's fonts for the Font box while the window opens
+        crate::sysfonts::warm_up();
         // Ctrl +/- zoom the timescale (as in MPP), not the whole UI
         ctx.options_mut(|o| o.zoom_with_keyboard = false);
         let recent = load_list("recent.txt");

@@ -1,0 +1,22 @@
+Neramit Planner 1.0.1
+- Setup: the license agreement is easier to read (a short summary first, headings and bullets) and now allows sharing Neramit Planner with others free of charge
+- The license page in Setup is larger, and Tab, Enter and Esc work as on the other pages
+- Clearer button names: Update to Plan, Reapply Links, Trace, Go to Task, Show on Timeline, Export Data; the Format tab is now Chart Format
+- Tidier dialogs: options and buttons that did nothing yet (greyed out) are gone from Options, Task Information, Timescale and Text Styles; Options lists only pages with settings
+- Thai and English letters in the same line now sit on one baseline (Thai used to float up to 1.3 pt higher, by a different amount at each size and display scale), also in the Windows fonts offered in the Font box
+- More even spacing between large ribbon buttons with short names
+- New icons for Manually Schedule, Auto Schedule, Trace, Move, Go to Task and Show on Timeline, and for the task mode in the sheet and status bar
+- The Font box lists every font installed on this PC (also fonts installed for one user), with a search box; font names no longer show as boxes, and a long name ends in "..." instead of running under the arrow
+- Fonts used in an .mpp file now open in that font whenever it is installed on this PC
+
+---
+Neramit Planner 1.0.1
+- ตัวติดตั้ง: ข้อตกลงการใช้งานอ่านง่ายขึ้น (มีสรุปสั้น ๆ หัวข้อและรายการย่อย) และอนุญาตให้แจกต่อได้ฟรี
+- หน้าข้อตกลงในตัวติดตั้งกว้างขึ้น และกด Tab, Enter, Esc ได้เหมือนหน้าอื่น
+- ชื่อปุ่มเข้าใจง่ายขึ้น: อัปเดตตามแผน, จัดวันตามลิงก์, ตามรอย, ไปที่งาน, แสดงบนไทม์ไลน์, ส่งออกข้อมูล และแท็บรูปแบบเปลี่ยนชื่อเป็น "รูปแบบแผนภูมิ"
+- หน้าต่างโปร่งขึ้น: ตัวเลือกและปุ่มสีเทาที่ยังใช้ไม่ได้ถูกเอาออกจากหน้า Options, ข้อมูลงาน, มาตราเวลา และลักษณะข้อความ หน้า Options แสดงเฉพาะหน้าที่มีค่าให้ตั้ง
+- ตัวอักษรไทยกับอังกฤษในบรรทัดเดียวกันอยู่บนเส้นฐานเดียวกันแล้ว (เดิมตัวไทยลอยสูงกว่าได้ถึง 1.3 pt และลอยไม่เท่ากันในแต่ละขนาดและสเกลหน้าจอ) รวมถึงฟอนต์ Windows ที่เลือกได้ในช่องฟอนต์
+- ระยะห่างของปุ่มใหญ่ในริบบอนที่ชื่อสั้นสม่ำเสมอขึ้น
+- ไอคอนใหม่สำหรับ จัดกำหนดการด้วยตนเอง, จัดกำหนดการอัตโนมัติ, ตามรอย, ย้าย, ไปที่งาน และแสดงบนไทม์ไลน์ รวมถึงไอคอนโหมดงานในตารางและแถบสถานะ
+- ช่องฟอนต์แสดงฟอนต์ทุกตัวที่ติดตั้งในเครื่อง (รวมฟอนต์ที่ติดตั้งเฉพาะผู้ใช้) พร้อมช่องค้นหา ชื่อฟอนต์ไม่เป็นกล่องสี่เหลี่ยมอีก และชื่อยาวจะแสดง "..." แทนการทับลูกศร
+- ฟอนต์ที่ใช้ในไฟล์ .mpp จะแสดงตามฟอนต์นั้นจริง หากเครื่องมีฟอนต์นั้นติดตั้งอยู่

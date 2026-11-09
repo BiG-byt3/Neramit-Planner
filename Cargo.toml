@@ -1,6 +1,6 @@
 [package]
 name = "neramit-planner"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["BiGByte Studio"]
 edition = "2021"
 description = "Neramit Planner - offline desktop project scheduling (Gantt) application"

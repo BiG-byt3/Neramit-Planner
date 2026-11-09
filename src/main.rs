@@ -40,6 +40,7 @@ mod schedule;
 mod setup;
 mod update;
 mod taskinfo;
+mod sysfonts;
 mod thai;
 mod thai_holidays;
 mod win11;
@@ -707,12 +708,7 @@ fn status_bar(app: &mut App, ui: &mut egui::Ui, cmds: &mut Vec<Cmd>) {
         p.rect_filled(mr, 0.0, theme::HOVER_BG);
     }
     let ir = Rect::from_center_size(Pos2::new(x + 11.0, r.center().y), Vec2::new(14.0, 12.0));
-    if app.doc.new_tasks_auto {
-        theme::paint_icon(&p, ir, theme::Icon::Auto, true);
-    } else {
-        p.circle_filled(ir.center() - Vec2::new(0.0, 2.0), 3.0, Color32::from_rgb(0xC0, 0x39, 0x2B));
-        p.line_segment([ir.center() + Vec2::new(0.0, 1.0), ir.center() + Vec2::new(-3.0, 6.0)], Stroke::new(1.2_f32, theme::TEXT));
-    }
+    theme::paint_icon(&p, ir, if app.doc.new_tasks_auto { theme::Icon::Auto } else { theme::Icon::Manual }, true);
     p.text(Pos2::new(x + 22.0, r.center().y), Align2::LEFT_CENTER, mode, font.clone(), theme::TEXT);
     if mresp.clicked() {
         app.doc.new_tasks_auto = !app.doc.new_tasks_auto;

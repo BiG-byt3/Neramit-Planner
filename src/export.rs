@@ -839,7 +839,7 @@ fn layout_pages(d: &ExportData, record: bool) -> (Fonts, Vec<String>, Vec<Vec<Pr
         let range = format!("{} - {}", d.start_text, d.finish_text);
         let rw = cv.fonts.width(&shape(&range), 8.0, false);
         cv.text(d.page_w - MARGIN - rw, MARGIN + 12.0, 8.0, false, &shape(&range), rgb(0x55, 0x55, 0x55));
-        cv.line(&[(MARGIN, MARGIN + 20.0), (d.page_w - MARGIN, MARGIN + 20.0)], rgb(0x31, 0x75, 0x2F), 1.2, None);
+        cv.line(&[(MARGIN, MARGIN + 20.0), (d.page_w - MARGIN, MARGIN + 20.0)], rgb(0x2E, 0x77, 0x32), 1.2, None);
         if !d.subtitle.is_empty() {
             cv.text(MARGIN, MARGIN + 31.0, 8.0, false, &shape(&d.subtitle), rgb(0x40, 0x40, 0x40));
         }

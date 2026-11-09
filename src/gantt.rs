@@ -1634,10 +1634,10 @@ pub fn gantt(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
             b(ui, has, "Copy", cmds, Cmd::Copy);
             b(ui, !app.clipboard.is_empty(), "Paste", cmds, Cmd::Paste);
             ui.separator();
-            b(ui, has, "Scroll to Task", cmds, Cmd::ScrollToTask);
+            b(ui, has, "Go to Task", cmds, Cmd::ScrollToTask);
             b(ui, has, "Information...", cmds, Cmd::TaskInfo);
             b(ui, has, "Notes...", cmds, Cmd::Notes);
-            b(ui, has, "Add to Timeline", cmds, Cmd::AddToTimeline);
+            b(ui, has, "Show on Timeline", cmds, Cmd::AddToTimeline);
             ui.separator();
             b(ui, has, "Format Bar...", cmds, Cmd::FormatBar);
             ui.separator();
@@ -1649,9 +1649,6 @@ pub fn gantt(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
             b(ui, true, "Bar Styles...", cmds, Cmd::BarStyles);
             b(ui, true, "Layout...", cmds, Cmd::Layout);
             b(ui, true, "Nonworking Time...", cmds, Cmd::TimescaleDialog(3));
-            if ui.add_enabled(false, egui::Button::new(tr("Progress Lines..."))).clicked() {
-                ui.close();
-            }
             ui.separator();
             let mut rollup = app.doc.formatting.layout.always_roll_up;
             if ui.checkbox(&mut rollup, tr("Show Bar Rollup")).clicked() {

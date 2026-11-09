@@ -283,7 +283,6 @@ pub fn show(app: &mut App, ctx: &egui::Context, mut st: TaskInfoState) -> Option
         ui.add_space(6.0);
         ui.separator();
         ui.horizontal(|ui| {
-            let _ = ui.add_enabled(false, egui::Button::new(tr("Help")).min_size(Vec2::new(70.0, 26.0)));
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 if ro {
                     if ui.add(egui::Button::new(tr("Close")).min_size(Vec2::new(70.0, 26.0))).clicked() {
@@ -480,16 +479,8 @@ fn advanced_tab(app: &App, ui: &mut Ui, st: &mut TaskInfoState, is_sum: bool) {
         });
         ui.checkbox(&mut st.effort_driven, tr("Effort driven"));
         ui.end_row();
-        ui.label(tr("Calendar:"));
-        ui.add_enabled(false, egui::Button::new(tr("None")).min_size(Vec2::new(170.0, 20.0)));
-        let mut ignore = false;
-        ui.add_enabled(false, egui::Checkbox::new(&mut ignore, tr("Scheduling ignores resource calendars")));
-        ui.end_row();
         ui.label(tr("WBS code:"));
         ui.add(egui::TextEdit::singleline(&mut st.wbs).desired_width(170.0));
-        ui.end_row();
-        ui.label(tr("Earned value method:"));
-        ui.add_enabled(false, egui::Button::new(tr("% Complete")).min_size(Vec2::new(170.0, 20.0)));
         ui.end_row();
     });
     ui.add_space(6.0);
@@ -505,11 +496,6 @@ fn advanced_tab(app: &App, ui: &mut Ui, st: &mut TaskInfoState, is_sum: bool) {
 
 fn notes_tab(ui: &mut Ui, st: &mut TaskInfoState) {
     ui.label(tr("Notes:"));
-    ui.horizontal(|ui| {
-        for b in ["A", "≡", "≡", "≡", "•", "▣"] {
-            let _ = ui.add_enabled(false, egui::Button::new(b).min_size(Vec2::new(22.0, 20.0)));
-        }
-    });
     ui.add(egui::TextEdit::multiline(&mut st.notes).desired_width(f32::INFINITY).desired_rows(9));
 }
 

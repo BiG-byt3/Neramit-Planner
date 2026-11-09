@@ -188,7 +188,7 @@ pub fn comparison_page(app: &mut App, ui: &mut Ui) {
     ui.label(RichText::new(format!("{} {}", tr("Previous version:"), c.previous)).color(theme::TEXT_DIM));
     ui.add_space(6.0);
     ui.horizontal(|ui| {
-        for (s, col) in [(Status::Added, Color32::from_rgb(0x10, 0x7C, 0x41)), (Status::Deleted, Color32::from_rgb(0xD1, 0x3B, 0x2E)), (Status::Changed, Color32::from_rgb(0xC5, 0x7A, 0x00)), (Status::Same, theme::TEXT_DIM)] {
+        for (s, col) in [(Status::Added, theme::GREEN), (Status::Deleted, Color32::from_rgb(0xD1, 0x3B, 0x2E)), (Status::Changed, Color32::from_rgb(0xC5, 0x7A, 0x00)), (Status::Same, theme::TEXT_DIM)] {
             ui.vertical(|ui| {
                 ui.set_min_width(130.0);
                 ui.label(RichText::new(count(s).to_string()).size(24.0).color(col));
@@ -255,7 +255,7 @@ pub fn comparison_page(app: &mut App, ui: &mut Ui) {
         ui.end_row();
         for r in c.rows.iter().filter(|r| !only || r.status != Status::Same).take(3000) {
             let col = match r.status {
-                Status::Added => Color32::from_rgb(0x10, 0x7C, 0x41),
+                Status::Added => theme::GREEN,
                 Status::Deleted => Color32::from_rgb(0xD1, 0x3B, 0x2E),
                 Status::Changed => Color32::from_rgb(0xC5, 0x7A, 0x00),
                 Status::Same => theme::TEXT_DIM,

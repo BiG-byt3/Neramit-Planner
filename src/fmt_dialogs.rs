@@ -22,7 +22,6 @@ fn buttons(ui: &mut Ui, extra: Option<&str>) -> (bool, bool, bool) {
     ui.add_space(8.0);
     ui.separator();
     ui.horizontal(|ui| {
-        let _ = ui.add_enabled(false, egui::Button::new(tr("Help")).min_size(Vec2::new(70.0, 26.0)));
         ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
             if ui.add(egui::Button::new(tr("Cancel")).min_size(Vec2::new(70.0, 26.0))).clicked() {
                 cancel = true;
@@ -700,12 +699,17 @@ fn font_block(ui: &mut Ui, id: &str, st: &mut TextStyle, show_bg: bool) {
             ui.add(egui::TextEdit::singleline(&mut st.font).desired_width(150.0));
             egui::Frame::group(ui.style()).inner_margin(2.0).show(ui, |ui| {
                 ui.set_width(150.0);
-                egui::ScrollArea::vertical().id_salt((id, "fonts")).max_height(110.0).show(ui, |ui| {
-                    for f in &fonts {
-                        if ui.selectable_label(st.font == *f, f).clicked() {
-                            st.font = f.clone();
+                // typing part of a name narrows the list (every font on the PC is in it)
+                let exact = fonts.iter().any(|f| f.eq_ignore_ascii_case(st.font.trim()));
+                let shown = if exact { fonts.iter().collect() } else { theme::find_fonts(&st.font) };
+                egui::ScrollArea::vertical().id_salt((id, "fonts")).max_height(110.0).auto_shrink([false, true]).show_rows(ui, ui.spacing().interact_size.y, shown.len(), |ui, rows| {
+                    ui.with_layout(egui::Layout::top_down_justified(egui::Align::LEFT), |ui| {
+                        for f in &shown[rows] {
+                            if ui.selectable_label(st.font.eq_ignore_ascii_case(f), f.as_str()).clicked() {
+                                st.font = (*f).clone();
+                            }
                         }
-                    }
+                    });
                 });
             });
         });
@@ -762,9 +766,6 @@ fn font_block(ui: &mut Ui, id: &str, st: &mut TextStyle, show_bg: bool) {
         if show_bg {
             ui.label(tr("Background Color:"));
             color_combo(ui, (id, "bc"), &mut st.background, true, 120.0);
-            ui.end_row();
-            ui.label(tr("Background Pattern:"));
-            ui.add_enabled(false, egui::Button::new(tr("Solid Fill")).min_size(Vec2::new(120.0, 20.0)));
             ui.end_row();
         }
     });
@@ -999,7 +1000,6 @@ pub fn show_timescale(app: &mut App, ctx: &egui::Context, mut st: TimescaleState
     let mut result: Option<bool> = None;
     let loc = app.loc.clone();
     let start = app.doc.start;
-    let cal_name = app.doc.calendar.name.clone();
     crate::theme::modal(egui::Id::unique("timescale")).show(ctx, |ui| {
         crate::theme::dialog_spacing(ui);
         ui.set_width(560.0);
@@ -1055,9 +1055,6 @@ pub fn show_timescale(app: &mut App, ctx: &egui::Context, mut st: TimescaleState
                     ui.end_row();
                     ui.label(tr("Pattern:"));
                     pick(ui, "nw_pat", &mut st.ts.nonworking.pattern, &Pattern::ALL, |p| p.label().to_string(), 120.0);
-                    ui.end_row();
-                    ui.label(tr("Calendar:"));
-                    ui.add_enabled(false, egui::Button::new(format!("{cal_name} (Project Calendar)")).min_size(Vec2::new(200.0, 20.0)));
                     ui.end_row();
                 });
             });
@@ -1199,7 +1196,6 @@ pub fn show_field_settings(app: &mut App, ctx: &egui::Context, mut st: FieldSett
         ui.add_space(8.0);
         ui.separator();
         ui.horizontal(|ui| {
-            let _ = ui.add_enabled(false, egui::Button::new(tr("Help")).min_size(Vec2::new(70.0, 26.0)));
             if ui.add(egui::Button::new(tr("Best Fit")).min_size(Vec2::new(70.0, 26.0))).clicked() {
                 best_fit = true;
             }
@@ -1289,16 +1285,13 @@ const OPTION_PAGES: [&str; 12] = ["General", "Display", "Schedule", "Proofing", 
 
 /// File > Options page of the AI assistants (Help > AI Assistants opens it).
 pub const AI_PAGE: u8 = 11;
+/// Options pages with nothing to set in Neramit Planner (not listed).
+const EMPTY_PAGES: [usize; 6] = [3, 4, 7, 8, 9, 10];
 
 fn section(ui: &mut Ui, text: &str) {
     ui.add_space(6.0);
     ui.label(RichText::new(crate::i18n::trp(text)).strong().color(theme::ACCENT).size(13.0));
     ui.separator();
-}
-
-fn dis_check(ui: &mut Ui, on: bool, label: &str) {
-    let mut v = on;
-    ui.add_enabled(false, egui::Checkbox::new(&mut v, tr(label)));
 }
 
 fn parse_time(s: &str, loc: &crate::locale::Locale) -> Option<(u32, u32)> {
@@ -1330,6 +1323,9 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                     ui.set_min_height(470.0);
                     ui.spacing_mut().button_padding = Vec2::new(10.0, 5.0);
                     for (k, p) in OPTION_PAGES.iter().enumerate() {
+                        if EMPTY_PAGES.contains(&k) {
+                            continue;
+                        }
                         let sel = st.page == k as u8;
                         let r = ui.add(egui::Button::selectable(sel, tr(p)));
                         if r.clicked() {
@@ -1347,8 +1343,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                     0 => {
                         ui.label(RichText::new(crate::i18n::trp("General options for working with Neramit Planner.")).size(13.0));
                         section(ui, "User Interface options");
-                        dis_check(ui, true, "Show Mini Toolbar on selection");
-                        dis_check(ui, true, "Enable Live Preview");
                         ui.horizontal(|ui| {
                             ui.label(tr("ScreenTip style:"));
                             let mut s = if st.settings.screentips { 0u8 } else { 2 };
@@ -1378,14 +1372,12 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                             ui.label(tr("Initials:"));
                             ui.add(egui::TextEdit::singleline(&mut st.settings.initials).desired_width(60.0));
                             ui.end_row();
-                            ui.label(tr("Office Theme:"));
+                            ui.label(tr("Theme:"));
                             let mut t = if st.settings.classic_ui { 0u8 } else { 1 };
                             pick(ui, "opt_theme", &mut t, &[0u8, 1], |v| ["Classic", "Modern"][v as usize].to_string(), 240.0);
                             st.settings.classic_ui = t == 0;
                             ui.end_row();
                         });
-                        section(ui, "Start up options");
-                        dis_check(ui, true, "Show the Start screen when this application starts");
                         section(ui, "File types");
                         if crate::setup::install_location().is_none() {
                             ui.label(RichText::new(tr("Install Neramit Planner with Setup to open files with a double-click.")).color(theme::TEXT_DIM));
@@ -1418,17 +1410,7 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                             ui.add(egui::TextEdit::singleline(&mut st.opts.currency_code).desired_width(60.0));
                             ui.end_row();
                         });
-                        section(ui, "Show indicators and options buttons for");
-                        ui.horizontal(|ui| {
-                            dis_check(ui, true, "Resource assignments");
-                            dis_check(ui, true, "Edits to work, units, or duration");
-                        });
-                        ui.horizontal(|ui| {
-                            dis_check(ui, true, "Edits to start and finish dates");
-                            dis_check(ui, true, "Deletions in the Name columns");
-                        });
                         section(ui, "Show these elements");
-                        dis_check(ui, false, "Entry bar");
                         ui.checkbox(&mut st.settings.show_status_bar, tr("Status bar"));
                     }
                     2 => {
@@ -1455,11 +1437,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                             ui.end_row();
                         });
                         section(ui, "Schedule");
-                        dis_check(ui, true, "Show scheduling messages");
-                        ui.horizontal(|ui| {
-                            ui.label(tr("Show assignment units as a:"));
-                            ui.add_enabled(false, egui::Button::new(tr("Percentage")));
-                        });
                         section(ui, "Scheduling options for this project");
                         egui::Grid::new("opt_sched").num_columns(2).spacing([10.0, 6.0]).show(ui, |ui| {
                             ui.label(tr("New tasks created:"));
@@ -1485,7 +1462,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                         ui.checkbox(&mut st.opts.new_tasks_effort_driven, tr("New tasks are effort driven"));
                         ui.checkbox(&mut st.opts.autolink, tr("Autolink inserted or moved tasks"));
                         ui.checkbox(&mut st.opts.split_in_progress, tr("Split in-progress tasks"));
-                        dis_check(ui, true, "Update Manually Scheduled tasks when editing links");
                         ui.checkbox(&mut st.opts.honor_constraints, tr("Tasks will always honor their constraint dates"));
                         ui.checkbox(&mut st.opts.show_estimated, tr("Show that scheduled tasks have estimated durations"));
                         ui.checkbox(&mut st.opts.new_tasks_estimated, tr("New scheduled tasks have estimated durations"));
@@ -1500,8 +1476,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                     6 => {
                         ui.label(RichText::new(crate::i18n::trp("Advanced options for working with Neramit Planner.")).size(13.0));
                         section(ui, "General");
-                        dis_check(ui, false, "Set AutoFilter on for new projects");
-                        dis_check(ui, false, "Prompt for project info for new projects");
                         ui.horizontal(|ui| {
                             ui.label(tr("Undo levels:"));
                             let mut u = st.settings.undo_levels as i32;
@@ -1516,8 +1490,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                             st.settings.recent_count = r as u8;
                         });
                         ui.checkbox(&mut st.settings.show_status_bar, tr("Show status bar"));
-                        dis_check(ui, true, "Show windows in Taskbar");
-                        dis_check(ui, true, "Show scroll bars");
                         ui.checkbox(&mut st.settings.screentips, tr("Show project screentips"));
                         section(ui, "Display options for this project");
                         egui::Grid::new("opt_labels").num_columns(6).spacing([8.0, 6.0]).show(ui, |ui| {
@@ -1542,14 +1514,6 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
                         ui.checkbox(&mut st.opts.underline_hyperlinks, tr("Underline hyperlinks"));
                         ui.checkbox(&mut st.opts.indent_name, tr("Indent name"));
                         ui.checkbox(&mut st.opts.show_outline_symbol, tr("Show outline symbol"));
-                        section(ui, "Calculation options for this project");
-                        dis_check(ui, false, "Move end of completed parts after status date back to status date");
-                        dis_check(ui, false, "Edits to total task % complete will be spread to the status date");
-                        dis_check(ui, false, "Calculate multiple critical paths");
-                        ui.horizontal(|ui| {
-                            ui.label(tr("Tasks are critical if slack is less than or equal to:"));
-                            ui.add_enabled(false, egui::Button::new(tr("0 days")));
-                        });
                     }
                     5 => {
                         ui.label(RichText::new(tr("Choose the language of menus, ribbons and dialogs.")).size(13.0));

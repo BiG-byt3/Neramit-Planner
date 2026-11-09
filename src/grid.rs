@@ -707,12 +707,7 @@ pub fn task_grid(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
                     }
                     TCol::Mode => {
                         let ir = Rect::from_center_size(Pos2::new(cr.center().x, cr.top() + ROW_H / 2.0), Vec2::new(16.0, 14.0));
-                        if t.manual {
-                            cp.circle_filled(ir.center() - Vec2::new(0.0, 2.0), 3.5, Color32::from_rgb(0xC0, 0x39, 0x2B));
-                            cp.line_segment([ir.center() + Vec2::new(0.0, 1.0), ir.center() + Vec2::new(-3.0, 7.0)], Stroke::new(1.3_f32, theme::TEXT));
-                        } else {
-                            paint_icon(&cp, ir, Icon::Auto, true);
-                        }
+                        paint_icon(&cp, ir, if t.manual { Icon::Manual } else { Icon::Auto }, true);
                     }
                     TCol::Name => {
                         let indent = if app.doc.options.indent_name { (t.outline_level.saturating_sub(1)) as f32 * 14.0 } else { 0.0 };
@@ -913,7 +908,7 @@ pub fn task_grid(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
         b(ui, has, "Copy Cell", cmds, Cmd::Copy);
         b(ui, !app.clipboard.is_empty(), "Paste", cmds, Cmd::Paste);
         ui.separator();
-        b(ui, has, "Scroll to Task", cmds, Cmd::ScrollToTask);
+        b(ui, has, "Go to Task", cmds, Cmd::ScrollToTask);
         b(ui, true, "Insert Task", cmds, Cmd::InsertTask);
         if ui.add_enabled(has, egui::Button::new(tr("Delete Task"))).clicked() {
             app.delete_selected();
@@ -930,7 +925,7 @@ pub fn task_grid(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
         ui.separator();
         b(ui, has, "Information...", cmds, Cmd::TaskInfo);
         b(ui, has, "Notes...", cmds, Cmd::Notes);
-        b(ui, has, "Add to Timeline", cmds, Cmd::AddToTimeline);
+        b(ui, has, "Show on Timeline", cmds, Cmd::AddToTimeline);
         ui.separator();
         b(ui, has, "Font...", cmds, Cmd::FontDialog);
         b(ui, true, "Text Styles...", cmds, Cmd::TextStyles);

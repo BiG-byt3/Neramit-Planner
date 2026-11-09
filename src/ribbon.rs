@@ -915,7 +915,7 @@ const TABS: [(RibbonTab, &str); 7] = [
     (RibbonTab::Project, "Project"),
     (RibbonTab::View, "View"),
     (RibbonTab::Help, "Help"),
-    (RibbonTab::Format, "Gantt Chart Format"),
+    (RibbonTab::Format, "Chart Format"),
 ];
 
 pub fn tab_row(app: &mut App, ui: &mut Ui) {
@@ -1093,8 +1093,8 @@ fn tab_spec(app: &App) -> Vec<(&'static str, Vec<It>)> {
                         ]),
                     ]),
                     It::Col(vec![
-                        It::S { label: "Mark on Track", cmd: None, menu: Some("markontrack"), on: false, enabled: has },
-                        s("Respect Links", Some(Cmd::RespectLinks), has),
+                        It::S { label: "Update to Plan", cmd: None, menu: Some("markontrack"), on: false, enabled: has },
+                        s("Reapply Links", Some(Cmd::RespectLinks), has),
                     ]),
                 ],
             ),
@@ -1103,7 +1103,7 @@ fn tab_spec(app: &App) -> Vec<(&'static str, Vec<It>)> {
                 vec![
                     It::L { label: "Manually\nSchedule", cmd: Some(Cmd::Manual), menu: None, on: manual == Some(true), enabled: has },
                     It::L { label: "Auto\nSchedule", cmd: Some(Cmd::Auto), menu: None, on: manual == Some(false), enabled: has },
-                    It::L { label: "Inspect", cmd: Some(Cmd::Inspect), menu: None, on: false, enabled: has },
+                    It::L { label: "Trace", cmd: Some(Cmd::Inspect), menu: None, on: false, enabled: has },
                     lm("Move", "move", has),
                     lm("Mode", "mode", true),
                 ],
@@ -1116,13 +1116,13 @@ fn tab_spec(app: &App) -> Vec<(&'static str, Vec<It>)> {
                 "Properties",
                 vec![
                     l("Information", Some(Cmd::TaskInfo), has),
-                    It::Col(vec![s("Notes", Some(Cmd::Notes), has), s("Details", Some(Cmd::TaskInfo), has), s("Add to Timeline", Some(Cmd::AddToTimeline), has)]),
+                    It::Col(vec![s("Notes", Some(Cmd::Notes), has), s("Details", Some(Cmd::TaskInfo), has), s("Show on Timeline", Some(Cmd::AddToTimeline), has)]),
                 ],
             ),
             (
                 "Editing",
                 vec![
-                    l("Scroll\nto Task", Some(Cmd::ScrollToTask), has && gantt),
+                    l("Go to\nTask", Some(Cmd::ScrollToTask), has && gantt),
                     It::Col(vec![s("Find...", Some(Cmd::Find), true), sm("Clear", "clear", has), sm("Fill", "fill", multi)]),
                 ],
             ),
@@ -1161,7 +1161,7 @@ fn tab_spec(app: &App) -> Vec<(&'static str, Vec<It>)> {
                     l("Task\nBoards", Some(Cmd::Report(crate::reports::ReportKind::BoardStatus)), true),
                 ],
             ),
-            ("Export", vec![It::L { label: "Visual\nReports", cmd: Some(Cmd::Export("csv")), menu: None, on: false, enabled: true }]),
+            ("Export", vec![It::L { label: "Export\nData", cmd: Some(Cmd::Export("csv")), menu: None, on: false, enabled: true }]),
             ("Share", vec![l("Copy\nPicture", Some(Cmd::Picture(false)), true), l("Save\nPicture", Some(Cmd::Picture(true)), true)]),
         ],
         RibbonTab::Project => vec![
@@ -1308,15 +1308,16 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
         "25% Complete" => Some(Icon::Percent(25)),
         "50% Complete" => Some(Icon::Percent(50)),
         "75% Complete" => Some(Icon::Percent(75)),
-        "100% Complete" | "Mark on Track" => Some(Icon::Percent(100)),
+        "100% Complete" | "Update to Plan" => Some(Icon::Percent(100)),
         "Outdent" => Some(Icon::Outdent),
         "Indent" => Some(Icon::Indent),
-        "Link Tasks" | "Respect Links" => Some(Icon::Link),
+        "Link Tasks" | "Reapply Links" => Some(Icon::Link),
         "Unlink Tasks" => Some(Icon::Unlink),
         "Manually Schedule" => Some(Icon::Manual),
         "Auto Schedule" | "Mode" => Some(Icon::Auto),
-        "Inspect" => Some(Icon::Inspect),
-        "Move" | "Scroll to Task" => Some(Icon::Scroll),
+        "Trace" => Some(Icon::Inspect),
+        "Move" => Some(Icon::Move),
+        "Go to Task" => Some(Icon::Scroll),
         "Task" => Some(Icon::Task),
         "Summary" => Some(Icon::Summary),
         "Milestone" => Some(Icon::Milestone),
@@ -1324,7 +1325,7 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
         "Check for Updates" => Some(Icon::Update),
         "AI Assistants" => Some(Icon::Ai),
         "Notes" => Some(Icon::Notes),
-        "Add to Timeline" => Some(Icon::Timeline),
+        "Show on Timeline" => Some(Icon::Timeline),
         "Find..." => Some(Icon::Find),
         "Clear" => Some(Icon::Delete),
         "Fill" => Some(Icon::Outdent),
@@ -1341,7 +1342,7 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
         "Zoom" | "Zoom In" | "Zoom..." => Some(Icon::ZoomIn),
         "Zoom Out" => Some(Icon::ZoomOut),
         "Change Working Time" => Some(Icon::Calendar),
-        "Visual Reports" => Some(Icon::Export),
+        "Export Data" => Some(Icon::Export),
         _ => None,
     };
     match icon {
@@ -1351,6 +1352,10 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
 }
 
 const BODY_H: f32 = 72.0;
+/// Large buttons: room either side of the label, and the narrowest button (so short labels
+/// such as Task, Move or Mode do not crowd their neighbours' icons).
+const LARGE_PAD: f32 = 10.0;
+const LARGE_MIN_W: f32 = 46.0;
 
 /// Render one control; returns its response when interactive.
 fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
@@ -1363,7 +1368,7 @@ fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
                 let last = shown.len() - 1;
                 shown[last] = format!("{} ▾", shown[last]);
             }
-            let (pad, min_w) = (10.0, 42.0);
+            let (pad, min_w) = (LARGE_PAD, LARGE_MIN_W);
             let tw = shown.iter().map(|l| ui.painter().layout_no_wrap(l.clone(), font.clone(), theme::TEXT).size().x + pad).fold(0.0f32, f32::max);
             let w = tw.max(min_w);
             let (r, resp) = ui.allocate_exact_size(Vec2::new(w, BODY_H), if *enabled { Sense::click() } else { Sense::hover() });
@@ -1457,8 +1462,11 @@ fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
             let br = Rect::from_min_max(egui::pos2(r.left() + pw, r.top() + 1.0), egui::pos2(r.right(), r.bottom() - 1.0));
             p.rect_filled(br, 4.0, Color32::WHITE);
             p.rect_stroke(br, 4.0, Stroke::new(1.0_f32, if resp.hovered() && enabled { theme::BRAND_GREEN } else { Color32::from_rgb(0xC8, 0xCC, 0xC8) }), egui::StrokeKind::Inside);
-            let cp = p.with_clip_rect(br.shrink(2.0));
-            cp.text(egui::pos2(br.left() + 4.0, br.center().y), Align2::LEFT_CENTER, tr(value), font, if enabled { theme::TEXT } else { theme::TEXT_DIM });
+            // a long value (a font name ...) ends in "…" before the arrow instead of running under it
+            let mut job = egui::text::LayoutJob::simple_singleline(tr(value).to_string(), font, if enabled { theme::TEXT } else { theme::TEXT_DIM });
+            job.wrap = egui::text::TextWrapping::truncate_at_width(br.width() - 4.0 - 16.0);
+            let galley = ui.fonts_mut(|f| f.layout_job(job));
+            p.galley(egui::pos2(br.left() + 4.0, br.center().y - galley.size().y / 2.0), galley, theme::TEXT);
             let c = egui::pos2(br.right() - 8.0, br.center().y);
             p.add(egui::Shape::convex_polygon(vec![c + Vec2::new(-3.0, -1.5), c + Vec2::new(3.0, -1.5), c + Vec2::new(0.0, 2.0)], theme::TEXT_DIM, Stroke::NONE));
             handle(ui, &resp, &None, menu, cmds, app);
@@ -1521,7 +1529,7 @@ fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
             p.rect_stroke(r.shrink2(Vec2::new(0.0, 6.0)), 2.0, Stroke::new(1.0_f32, Color32::from_rgb(0xD8, 0xD8, 0xD8)), egui::StrokeKind::Inside);
             let colors = [
                 (Color32::from_rgb(0x8C, 0xB4, 0xE6), Color32::from_rgb(0x41, 0x7A, 0xC0)),
-                (Color32::from_rgb(0x9C, 0xD0, 0x9A), Color32::from_rgb(0x31, 0x75, 0x2F)),
+                (Color32::from_rgb(0x9C, 0xD0, 0x9A), Color32::from_rgb(0x2E, 0x77, 0x32)),
                 (Color32::from_rgb(0xF4, 0xB1, 0x83), Color32::from_rgb(0xC5, 0x5A, 0x11)),
                 (Color32::from_rgb(0xC9, 0xC9, 0xC9), Color32::from_rgb(0x59, 0x59, 0x59)),
                 (Color32::from_rgb(0xB4, 0xA7, 0xD6), Color32::from_rgb(0x67, 0x4E, 0xA7)),
@@ -1546,7 +1554,9 @@ fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
 
 fn handle(_ui: &mut Ui, resp: &egui::Response, cmd: &Option<Cmd>, menu: &Option<&'static str>, cmds: &mut Vec<Cmd>, app: &mut App) {
     if let Some(key) = menu {
-        egui::Popup::menu(resp).close_behavior(egui::PopupCloseBehavior::CloseOnClick).show(|ui| {
+        // the font list has a search box: clicks inside it must not close the menu
+        let close = if *key == "fontname" { egui::PopupCloseBehavior::CloseOnClickOutside } else { egui::PopupCloseBehavior::CloseOnClick };
+        egui::Popup::menu(resp).close_behavior(close).show(|ui| {
             ui.set_min_width(200.0);
             fill_menu(key, ui, cmds, app);
         });
@@ -1587,7 +1597,7 @@ fn fill_menu_items(key: &str, ui: &mut Ui, cmds: &mut Vec<Cmd>, app: &mut App, p
             b(ui, "Resource Usage", Cmd::View(View::ResourceUsage));
         }
         "markontrack" => {
-            b(ui, "Mark on Track", Cmd::MarkOnTrack);
+            b(ui, "Update to Plan", Cmd::MarkOnTrack);
             b(ui, "Update Tasks", Cmd::UpdateTasks);
         }
         "move" => {
@@ -1767,11 +1777,53 @@ fn fill_menu_items(key: &str, ui: &mut Ui, cmds: &mut Vec<Cmd>, app: &mut App, p
             }
         }
         "fontname" => {
-            for f in theme::available_fonts() {
-                let label = f.clone();
-                if ui.button(egui::RichText::new(&label).family(theme::family(&f, false))).clicked() {
-                    cmds.push(Cmd::FontName(f));
+            // every font on the PC, found by typing part of its name. Names are drawn in the
+            // program's font: drawing each in its own face would read hundreds of font files.
+            let id = egui::Id::unique("font_menu_filter");
+            let pass = ui.ctx().cumulative_pass_nr();
+            let (mut q, last): (String, u64) = ui.data(|d| d.get_temp(id)).unwrap_or_default();
+            let opened = last + 1 < pass;
+            if opened {
+                q.clear();
+            }
+            const W: f32 = 230.0;
+            ui.set_width(W);
+            let edit = ui.add(egui::TextEdit::singleline(&mut q).hint_text(tr("Search fonts")).desired_width(W));
+            if opened {
+                edit.request_focus();
+            }
+            let current = app.selected_text_style().font;
+            let current = if current.is_empty() { crate::format::DEFAULT_FONT.to_string() } else { current };
+            let fonts = theme::find_fonts(&q);
+            let mut chosen = None;
+            if edit.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                chosen = fonts.first().map(|f| (*f).clone());
+            }
+            ui.separator();
+            if fonts.is_empty() {
+                ui.label(egui::RichText::new(tr("No matching font")).weak());
+            }
+            let row_h = ui.spacing().interact_size.y + ui.spacing().item_spacing.y;
+            let mut area = egui::ScrollArea::vertical().max_height(360.0).auto_shrink([false, true]);
+            if opened {
+                // open at the font in use, a few rows from the top
+                if let Some(k) = fonts.iter().position(|f| f.eq_ignore_ascii_case(&current)) {
+                    area = area.vertical_scroll_offset((k as f32 - 3.0).max(0.0) * row_h);
                 }
+            }
+            area.show_rows(ui, ui.spacing().interact_size.y, fonts.len(), |ui, rows| {
+                ui.with_layout(egui::Layout::top_down_justified(egui::Align::LEFT), |ui| {
+                    for f in &fonts[rows] {
+                        if ui.selectable_label(f.eq_ignore_ascii_case(&current), f.as_str()).clicked() {
+                            chosen = Some((*f).clone());
+                        }
+                    }
+                });
+            });
+            ui.data_mut(|d| d.insert_temp(id, (q, pass)));
+            if let Some(f) = chosen {
+                cmds.push(Cmd::FontName(f));
+                ui.close();
             }
         }
         "fontsize" => {
@@ -1924,8 +1976,8 @@ fn item_width(ctx: &egui::Context, it: &It) -> f32 {
         It::L { label, menu, .. } => tr(label)
             .split('\n')
             .enumerate()
-            .map(|(k, l)| text_w(ctx, &if menu.is_some() && k == tr(label).split('\n').count() - 1 { format!("{l} ▾") } else { l.to_string() }, 11.5) + 10.0)
-            .fold(42.0f32, f32::max),
+            .map(|(k, l)| text_w(ctx, &if menu.is_some() && k == tr(label).split('\n').count() - 1 { format!("{l} ▾") } else { l.to_string() }, 11.5) + LARGE_PAD)
+            .fold(LARGE_MIN_W, f32::max),
         It::S { label, menu, .. } => 24.0 + text_w(ctx, &if menu.is_some() { format!("{} ▾", tr(label)) } else { tr(label).to_string() }, 12.0) + 12.0,
         It::I { .. } => 24.0,
         It::C { label, .. } => text_w(ctx, tr(label), 12.0) + 26.0,
@@ -2004,7 +2056,8 @@ pub fn ribbon_body(app: &mut App, ui: &mut Ui, cmds: &mut Vec<Cmd>) {
     // Office-style adaptive ribbon: when the window is too narrow, first drop the labels of small
     // buttons (the standard order for the Task tab: Editing, Properties, Clipboard, ...), then turn
     // large buttons into stacks of small buttons, starting with the right-most group, until it fits.
-    let avail = panel.width() - 16.0 - 34.0;
+    // (the collapse chevron sits in the last 25 px, below the group content)
+    let avail = panel.width() - 16.0 - 20.0;
     let fonts_ctx = ui.ctx().clone();
     let width_of = |spec: &Vec<(&'static str, Vec<It>)>| -> f32 { spec.iter().map(|(t, items)| group_width(&fonts_ctx, t, items)).sum() };
     let order: Vec<usize> = if app.tab == RibbonTab::Task {
@@ -2070,7 +2123,7 @@ pub fn ribbon_body(app: &mut App, ui: &mut Ui, cmds: &mut Vec<Cmd>) {
         p.line_segment([egui::pos2(sx, top + 8.0), egui::pos2(sx, top + BODY_H + 12.0)], Stroke::new(1.0_f32, Color32::from_rgb(0xDC, 0xDE, 0xDC)));
         ui2.add_space(gap);
     }
-    // collapse-the-ribbon chevron (bottom right), like Office
+    // collapse-the-ribbon chevron (bottom right)
     let cr = Rect::from_center_size(egui::pos2(panel.right() - 16.0, panel.bottom() - 12.0), Vec2::splat(18.0));
     let resp = ui.interact(cr, ui.scope_id().with("collapse_ribbon"), Sense::click()).on_hover_text(tr("Collapse the Ribbon"));
     let p = ui.painter();
