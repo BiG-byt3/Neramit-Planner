@@ -1638,27 +1638,33 @@ pub fn show_options(app: &mut App, ctx: &egui::Context, mut st: OptionsState) ->
 
 // ====================================================================== Gantt Chart Style gallery
 
+/// The Gantt Chart Style gallery: task bar fill and the dark colour of summaries / milestones.
+/// The first one is the default look of new plans (see assets/gantt-bar-styles.json).
+pub const GALLERY: [(Rgb, Rgb); 6] = [
+    ([90, 155, 234], [62, 75, 94]),
+    ([92, 190, 130], [19, 114, 64]),
+    ([247, 170, 90], [199, 106, 16]),
+    ([160, 172, 188], [45, 55, 70]),
+    ([180, 156, 248], [91, 52, 201]),
+    ([94, 200, 200], [12, 110, 120]),
+];
+pub const MILESTONE_ORANGE: Rgb = [245, 146, 47];
+
 /// Apply one of the gallery colour schemes to the task / summary / milestone bar styles.
 pub fn apply_gallery(app: &mut App, g: u8) {
-    let schemes: [(Rgb, Rgb); 6] = [
-        (TASK_BLUE, BLACK),
-        ([49, 117, 47], [26, 60, 25]),
-        ([197, 90, 17], [120, 55, 10]),
-        ([89, 89, 89], [40, 40, 40]),
-        ([103, 78, 167], [60, 40, 110]),
-        ([31, 134, 168], [20, 80, 100]),
-    ];
-    let (task, dark) = schemes[(g as usize).min(5)];
+    let (task, dark) = GALLERY[(g as usize).min(GALLERY.len() - 1)];
     app.checkpoint();
     app.doc.formatting.gallery = g;
     for s in app.doc.formatting.bar_styles.iter_mut() {
         match s.name.as_str() {
             "Task" | "Split" => s.bar.middle.color = task,
-            "Summary" | "Milestone" => {
+            "Summary" => {
                 s.bar.start.color = dark;
                 s.bar.middle.color = dark;
                 s.bar.end.color = dark;
             }
+            // the default scheme keeps its orange milestones
+            "Milestone" => s.bar.start.color = if g == 0 { MILESTONE_ORANGE } else { dark },
             _ => {}
         }
     }

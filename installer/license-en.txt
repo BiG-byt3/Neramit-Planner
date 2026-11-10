@@ -35,3 +35,6 @@ To the extent permitted by law, BiGByte Studio is not liable for any damage aris
 
 ## 7. Updates
 These terms also apply to updates of the Software.
+
+## 8. Trademarks
+Microsoft and Microsoft Project are trademarks of Microsoft Corporation. Neramit Planner is not affiliated with, endorsed or sponsored by Microsoft. The Software can open and save .mpp files only so that you can work with your own project files.

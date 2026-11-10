@@ -10,6 +10,7 @@ mod fmt_dialogs;
 mod format;
 mod gantt;
 mod i18n;
+mod icons;
 mod export;
 mod locale;
 mod mcp;
@@ -578,14 +579,9 @@ fn windows_view(app: &mut App, ui: &mut egui::Ui, cmds: &mut Vec<Cmd>) {
 fn main_view(app: &mut App, ui: &mut egui::Ui, cmds: &mut Vec<Cmd>) {
     let full = ui.max_rect();
     let p = ui.painter().clone();
-    // vertical view-name bar on the far left
+    // a slim brand-green stripe on the far left (the view's name is on the ribbon's view buttons)
     let label_bar = Rect::from_min_size(full.min, Vec2::new(grid::VIEW_BAR_W, full.height()));
-    // the standard grey gradient running into the ID column, no edge line, green label
-    for (i, v) in theme::SHEET_VIEW_BAR.iter().enumerate() {
-        let x = label_bar.left() + i as f32;
-        p.rect_filled(Rect::from_min_max(Pos2::new(x, label_bar.top()), Pos2::new(x + 1.0, label_bar.bottom())), 0.0, Color32::from_gray(*v));
-    }
-    gantt::vertical_text(&p, label_bar, tr(app.view.label()), theme::SHEET_VIEW_LABEL);
+    p.rect_filled(label_bar, 0.0, theme::GREEN);
     let area = Rect::from_min_max(Pos2::new(label_bar.right(), full.top()), full.max);
 
     // mouse wheel: vertical scroll, Shift = horizontal, Ctrl = zoom the timescale around the pointer
@@ -701,7 +697,7 @@ fn status_bar(app: &mut App, ui: &mut egui::Ui, cmds: &mut Vec<Cmd>) {
     let w = g.size().x;
     p.galley(Pos2::new(x, r.center().y - g.size().y / 2.0), g, theme::TEXT);
     x += w.max(60.0) + 24.0;
-    let mode = tr(if app.doc.new_tasks_auto { "New Tasks : Auto Scheduled" } else { "New Tasks : Manually Scheduled" });
+    let mode = tr(if app.doc.new_tasks_auto { "New tasks: Auto Schedule" } else { "New tasks: Manual Schedule" });
     let mr = Rect::from_min_size(Pos2::new(x, r.top() + 1.0), Vec2::new(230.0, r.height() - 2.0));
     let mresp = ui.interact(mr, ui.scope_id().with("mode_status"), Sense::click());
     if mresp.hovered() {

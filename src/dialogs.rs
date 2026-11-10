@@ -1807,7 +1807,7 @@ pub fn show(app: &mut App, ctx: &egui::Context) {
             crate::theme::modal(egui::Id::unique("proj_info")).show(ctx, |ui| {
                 crate::theme::dialog_spacing(ui);
                 ui.set_width(440.0);
-                ui.label(RichText::new(tr("Project Information")).strong().size(14.0));
+                ui.label(RichText::new(tr("Project Details")).strong().size(14.0));
                 let ro = false;
                 ui.add_enabled_ui(!ro, |ui| {
                 ui.add_space(8.0);
@@ -1875,7 +1875,7 @@ pub fn show(app: &mut App, ctx: &egui::Context) {
             crate::theme::modal(egui::Id::unique("working_time")).show(ctx, |ui| {
                 crate::theme::dialog_spacing(ui);
                 ui.set_width(520.0);
-                ui.label(RichText::new(tr("Change Working Time")).strong().size(14.0));
+                ui.label(RichText::new(tr("Working Days & Holidays")).strong().size(14.0));
                 let ro = false;
                 ui.add_enabled_ui(!ro, |ui| {
                 ui.add_space(6.0);
@@ -1989,7 +1989,7 @@ pub fn show(app: &mut App, ctx: &egui::Context) {
             crate::theme::modal(egui::Id::unique("res_info")).show(ctx, |ui| {
                 crate::theme::dialog_spacing(ui);
                 ui.set_width(440.0);
-                ui.label(RichText::new(tr("Resource Information")).strong().size(14.0));
+                ui.label(RichText::new(tr("Resource Details")).strong().size(14.0));
                 ui.add_space(4.0);
                 ui.horizontal(|ui| {
                     for (k, l) in [(0u8, "General"), (1, "Costs"), (2, "Notes")] {
@@ -2517,6 +2517,7 @@ pub fn show(app: &mut App, ctx: &egui::Context) {
                     ui.add_space(6.0);
                     ui.label(tr("Desktop project scheduling with Gantt chart. Works fully offline — no sign-in."));
                     ui.label(tr("File formats: Neramit Planner (.neramit), .mpp / .mpt and XML (.xml); export to PDF, Excel and CSV."));
+                    crate::ribbon::trademark_note(ui);
                 } else {
                     ui.label(RichText::new(tr("Keyboard Shortcuts")).strong().size(14.0));
                     ui.add_space(6.0);
@@ -2528,7 +2529,7 @@ pub fn show(app: &mut App, ctx: &egui::Context) {
                             ("Insert", "Insert task"),
                             ("Delete", "Delete task"),
                             ("F2", "Edit cell"),
-                            ("Shift+F2", "Task Information"),
+                            ("Shift+F2", "Task Details"),
                             ("Ctrl+F2 / Ctrl+Shift+F2", "Link / Unlink tasks"),
                             ("Alt+Shift+Right / Left", "Indent / Outdent"),
                             ("Alt+Shift+Up / Down", "Move task up / down"),

@@ -18,7 +18,7 @@ use std::sync::{Mutex, OnceLock};
 
 use windows_sys::Win32::Foundation::*;
 use windows_sys::Win32::Graphics::Gdi::*;
-use windows_sys::Win32::Storage::FileSystem::ReplaceFileW;
+use windows_sys::Win32::Storage::FileSystem::{ReplaceFileW, REPLACEFILE_IGNORE_ACL_ERRORS};
 use windows_sys::Win32::System::Com::{CoInitializeEx, CoTaskMemFree};
 use windows_sys::Win32::System::LibraryLoader::{GetModuleHandleW, LoadLibraryW};
 use windows_sys::Win32::System::Registry::{RegGetValueW, HKEY_CURRENT_USER, RRF_RT_REG_SZ};
@@ -246,8 +246,10 @@ fn replace_program(exe: &Path, bytes: &[u8]) -> std::io::Result<Option<PathBuf>>
         drop(file);
         if exe.exists() {
             let (dest, src, old) = (wide(&exe.to_string_lossy()), wide(&staged.to_string_lossy()), wide(&backup.to_string_lossy()));
+            // Staged siblings inherit this directory's ACL. Modify permission must suffice
+            // even when the user cannot merge the old file's ACL.
             // SAFETY: NUL-terminated paths outlive the call; all paths are in the same directory.
-            if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), old.as_ptr(), 0, std::ptr::null(), std::ptr::null()) } == 0 {
+            if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), old.as_ptr(), REPLACEFILE_IGNORE_ACL_ERRORS, std::ptr::null(), std::ptr::null()) } == 0 {
                 let error = std::io::Error::last_os_error();
                 // Windows may have moved the old name before an exchange failed. Restore it if needed.
                 if !exe.exists() && backup.is_file() {
@@ -272,7 +274,7 @@ fn restore_program(exe: &Path, backup: &Path) -> std::io::Result<()> {
     }
     let (dest, src) = (wide(&exe.to_string_lossy()), wide(&backup.to_string_lossy()));
     // SAFETY: the NUL-terminated paths outlive the call, with no extra backup requested.
-    if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), std::ptr::null(), 0, std::ptr::null(), std::ptr::null()) } == 0 {
+    if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), std::ptr::null(), REPLACEFILE_IGNORE_ACL_ERRORS, std::ptr::null(), std::ptr::null()) } == 0 {
         return Err(std::io::Error::last_os_error());
     }
     Ok(())

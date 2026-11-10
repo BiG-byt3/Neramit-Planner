@@ -1678,7 +1678,7 @@ pub fn gantt(app: &mut App, ui: &mut Ui, rect: Rect, cmds: &mut Vec<Cmd>) {
         b(ui, "Zoom...", cmds, Cmd::ZoomDialog);
         b(ui, "Nonworking Time...", cmds, Cmd::TimescaleDialog(3));
         ui.separator();
-        b(ui, "Change Working Time...", cmds, Cmd::WorkingTime);
+        b(ui, "Working Days & Holidays...", cmds, Cmd::WorkingTime);
     });
 
     // ---------------- scrollbars
@@ -1754,15 +1754,17 @@ fn hscrollbar(app: &mut App, ui: &mut Ui, r: Rect, view_w: f32) {
 
 // ======================================================================= timeline
 
+/// Timeline bars take these soft colours in turn; Today is marked in orange.
+const TIMELINE_COLORS: [Color32; 4] = [Color32::from_rgb(0x9F, 0xC8, 0xF5), Color32::from_rgb(0xA8, 0xDF, 0xBE), Color32::from_rgb(0xFF, 0xD3, 0x9E), Color32::from_rgb(0xCF, 0xC0, 0xF9)];
+const TIMELINE_TODAY: Color32 = Color32::from_rgb(0xF5, 0x92, 0x2F);
+
 pub fn timeline(app: &mut App, ui: &mut Ui, rect: Rect) {
     let p = ui.painter_at(rect);
     p.rect_filled(rect, 0.0, theme::TIMELINE_BG);
     p.line_segment([rect.left_bottom(), rect.right_bottom()], Stroke::new(1.0_f32, theme::RIBBON_BORDER));
-    // vertical "TIMELINE" label
-    let lbl = Rect::from_min_size(rect.min, Vec2::new(22.0, rect.height()));
-    p.rect_filled(lbl, 0.0, Color32::WHITE);
-    p.line_segment([lbl.right_top(), lbl.right_bottom()], Stroke::new(1.0_f32, theme::GRID_LINE));
-    vertical_text(&p, lbl, tr("TIMELINE"), theme::TEXT_DIM);
+    // the same slim green stripe as the main view's left edge
+    let lbl = Rect::from_min_size(rect.min, Vec2::new(crate::grid::VIEW_BAR_W, rect.height()));
+    p.rect_filled(lbl, 0.0, theme::GREEN);
 
     let area = Rect::from_min_max(Pos2::new(lbl.right() + 92.0, rect.top() + 24.0), Pos2::new(rect.right() - 92.0, rect.bottom() - 18.0));
     if app.doc.tasks.is_empty() {
@@ -1773,13 +1775,19 @@ pub fn timeline(app: &mut App, ui: &mut Ui, rect: Rect) {
     let pf = app.doc.finish_date().max(ps + Duration::days(1));
     let span = ((pf - ps).num_days() + 1) as f32;
     let x = |d: NaiveDate| area.left() + (d - ps).num_days() as f32 / span * area.width();
-    // start / finish labels
+    // the plan's first and last day as date chips at both ends of a rounded track
     let small = FontId::proportional(11.0);
-    p.text(Pos2::new(lbl.right() + 6.0, area.top() - 6.0), Align2::LEFT_CENTER, tr("Start"), small.clone(), theme::TEXT_DIM);
-    p.text(Pos2::new(lbl.right() + 6.0, area.top() + 8.0), Align2::LEFT_CENTER, app.fmt_date(ps), small.clone(), theme::TEXT);
-    p.text(Pos2::new(rect.right() - 6.0, area.top() - 6.0), Align2::RIGHT_CENTER, tr("Finish"), small.clone(), theme::TEXT_DIM);
-    p.text(Pos2::new(rect.right() - 6.0, area.top() + 8.0), Align2::RIGHT_CENTER, app.fmt_finish(pf), small.clone(), theme::TEXT);
-    p.rect_filled(area, 0.0, theme::TIMELINE_BAR);
+    let chip = |x: f32, align: Align2, text: String, fill: Color32| {
+        let g = p.layout_no_wrap(text, small.clone(), Color32::WHITE);
+        let w = g.size().x + 14.0;
+        let x0 = if align == Align2::LEFT_CENTER { x } else { x - w };
+        let r = Rect::from_min_size(Pos2::new(x0, area.center().y - 10.0), Vec2::new(w, 20.0));
+        p.rect_filled(r, 10.0, fill);
+        p.galley(Pos2::new(r.left() + 7.0, r.center().y - g.size().y / 2.0), g, Color32::WHITE);
+    };
+    chip(lbl.right() + 6.0, Align2::LEFT_CENTER, app.fmt_date(ps), theme::GREEN);
+    chip(rect.right() - 6.0, Align2::RIGHT_CENTER, app.fmt_finish(pf), theme::SUMMARY);
+    p.rect_filled(area, 6.0, theme::TIMELINE_BAR);
     // month ticks above
     let mut d = NaiveDate::from_ymd_opt(ps.year(), ps.month(), 1).unwrap();
     let mut last_label_x = f32::NEG_INFINITY;
@@ -1798,8 +1806,9 @@ pub fn timeline(app: &mut App, ui: &mut Ui, rect: Rect) {
     let today = chrono::Local::now().date_naive();
     if today >= ps && today <= pf {
         let tx = x(today);
-        p.line_segment([Pos2::new(tx, area.top()), Pos2::new(tx, area.bottom())], Stroke::new(1.5_f32, theme::TODAY));
-        p.text(Pos2::new(tx, area.bottom() + 8.0), Align2::CENTER_CENTER, tr("Today"), small.clone(), theme::TODAY);
+        p.line_segment([Pos2::new(tx, area.top()), Pos2::new(tx, area.bottom())], Stroke::new(2.0_f32, TIMELINE_TODAY));
+        p.circle_filled(Pos2::new(tx, area.bottom() + 2.0), 3.5, TIMELINE_TODAY);
+        p.text(Pos2::new(tx + 6.0, area.bottom() + 2.0), Align2::LEFT_CENTER, tr("Today"), small.clone(), TIMELINE_TODAY);
     }
     // tasks on timeline
     let items: Vec<usize> = (0..app.doc.tasks.len()).filter(|&i| app.doc.tasks[i].on_timeline).collect();
@@ -1812,20 +1821,24 @@ pub fn timeline(app: &mut App, ui: &mut Ui, rect: Rect) {
     let lanes = if overlap { 2.0f32 } else { 1.0 };
     let lane_h = (area.height() - 4.0) / lanes;
     let mut lane_end = [f32::NEG_INFINITY; 2];
+    let mut bar_no = 0usize;
     for i in items {
         let t = &app.doc.tasks[i];
         let (x0, x1) = (x(t.start), x(t.finish + Duration::days(1)));
         if t.is_milestone() {
             let c = Pos2::new(x0, area.bottom() + 2.0);
-            p.add(Shape::convex_polygon(vec![c + Vec2::new(0.0, -6.0), c + Vec2::new(6.0, 0.0), c + Vec2::new(0.0, 6.0), c + Vec2::new(-6.0, 0.0)], theme::SUMMARY, Stroke::NONE));
+            p.add(Shape::convex_polygon(vec![c + Vec2::new(0.0, -6.0), c + Vec2::new(6.0, 0.0), c + Vec2::new(0.0, 6.0), c + Vec2::new(-6.0, 0.0)], theme::rgb(crate::fmt_dialogs::MILESTONE_ORANGE), Stroke::NONE));
             p.text(c + Vec2::new(8.0, 0.0), Align2::LEFT_CENTER, crate::thai::shape(&t.name), small.clone(), theme::TEXT);
             continue;
         }
         let lane = if !overlap || lane_end[0] <= x0 + 1.0 { 0 } else { 1 };
         lane_end[lane] = x1;
         let r = Rect::from_min_max(Pos2::new(x0, area.top() + 2.0 + lane as f32 * lane_h), Pos2::new(x1.max(x0 + 3.0), area.top() + 2.0 + (lane as f32 + 1.0) * lane_h - 2.0));
-        p.rect_filled(r, 0.0, theme::TIMELINE_TASK);
-        p.rect_stroke(r, 0.0, Stroke::new(1.0_f32, Color32::WHITE), egui::StrokeKind::Inside);
+        // rounded bars in turn of a few soft colours
+        let fill = TIMELINE_COLORS[bar_no % TIMELINE_COLORS.len()];
+        bar_no += 1;
+        p.rect_filled(r, 5.0, fill);
+        p.rect_stroke(r, 5.0, Stroke::new(1.0_f32, Color32::WHITE), egui::StrokeKind::Inside);
         let cp = p.with_clip_rect(r.shrink(2.0));
         let two_line = lane_h >= 28.0;
         cp.text(Pos2::new(r.left() + 4.0, r.center().y - if two_line { 6.0 } else { 0.0 }), Align2::LEFT_CENTER, crate::thai::shape(&t.name), FontId::proportional(11.0), theme::TEXT);
@@ -1841,15 +1854,6 @@ pub fn timeline(app: &mut App, ui: &mut Ui, rect: Rect) {
     }
 }
 
-pub fn vertical_text(p: &egui::Painter, r: Rect, text: &str, color: Color32) {
-    // the standard small label (59 px for "GANTT CHART")
-    let size = 9.0;
-    let galley = p.layout_no_wrap(text.to_string(), FontId::proportional(size), color);
-    let pos = Pos2::new(r.center().x - galley.size().y / 2.0, r.center().y + galley.size().x / 2.0);
-    let mut shape = egui::epaint::TextShape::new(pos, galley, color);
-    shape.angle = -std::f32::consts::FRAC_PI_2;
-    p.add(shape);
-}
 
 #[cfg(test)]
 mod tests {
@@ -1909,9 +1913,9 @@ mod tests {
             fills(&cs.shape, &mut rects);
         }
         let find = |c: [u8; 3]| rects.iter().filter(|(_, f)| *f == Color32::from_rgb(c[0], c[1], c[2])).map(|(r, _)| *r).max_by(|a, b| a.width().total_cmp(&b.width()));
-        let task = find([138, 187, 237]).expect("task bar (top half)");
-        let base = find([99, 99, 99]).expect("baseline bar (bottom half)");
-        let prog = find([59, 135, 212]).expect("progress bar");
+        let task = find([90, 155, 234]).expect("task bar (top half)");
+        let base = find([140, 150, 165]).expect("baseline bar (bottom half)");
+        let prog = find([29, 79, 153]).expect("progress bar");
         let ppd = app.px_per_day;
         // baseline Mon 08:00 - Fri 17:00, task Wed 08:00 - next Tue 17:00 (two working days later)
         assert!((task.left() - base.left() - 2.0 * ppd).abs() < 1.5, "task {task:?} baseline {base:?}");
@@ -1944,7 +1948,7 @@ mod tests {
         for cs in &shapes {
             fills(&cs.shape, &mut rects);
         }
-        let mut bars: Vec<Rect> = rects.iter().filter(|(_, f)| *f == Color32::from_rgb(138, 187, 237)).map(|(r, _)| *r).collect();
+        let mut bars: Vec<Rect> = rects.iter().filter(|(_, f)| *f == Color32::from_rgb(90, 155, 234)).map(|(r, _)| *r).collect();
         bars.sort_by(|a, b| a.top().total_cmp(&b.top()));
         assert_eq!(bars.len(), 2, "two task bars");
         (app, ctx, bars[0], bars[1])

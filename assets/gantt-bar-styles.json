@@ -36,9 +36,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     138,
-     187,
-     237
+     90,
+     155,
+     234
     ]
    },
    "end": {
@@ -100,9 +100,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     59,
-     135,
-     212
+     29,
+     79,
+     153
     ]
    },
    "end": {
@@ -151,9 +151,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     99,
-     99,
-     99
+     245,
+     146,
+     47
     ]
    },
    "middle": {
@@ -204,30 +204,30 @@
   "to": "Finish",
   "bar": {
    "start": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    },
    "middle": {
-    "shape": "LineTop",
+    "shape": "Top",
     "pattern": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    },
    "end": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    }
   },
@@ -252,30 +252,30 @@
   "to": "Finish",
   "bar": {
    "start": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     182,
-     182,
-     182
+     163,
+     174,
+     188
     ]
    },
    "middle": {
-    "shape": "LineTop",
+    "shape": "Top",
     "pattern": "Solid",
     "color": [
-     182,
-     182,
-     182
+     163,
+     174,
+     188
     ]
    },
    "end": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     182,
-     182,
-     182
+     163,
+     174,
+     188
     ]
    }
   },
@@ -303,27 +303,27 @@
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    },
    "middle": {
     "shape": "Middle",
     "pattern": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    },
    "end": {
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     62,
+     75,
+     94
     ]
    }
   },
@@ -372,9 +372,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     138,
-     187,
-     237
+     90,
+     155,
+     234
     ]
    },
    "end": {
@@ -432,9 +432,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     59,
-     135,
-     212
+     29,
+     79,
+     153
     ]
    },
    "end": {
@@ -488,9 +488,9 @@
     "shape": "Middle",
     "pattern": "Solid",
     "color": [
-     59,
-     135,
-     212
+     29,
+     79,
+     153
     ]
    },
    "end": {
@@ -596,9 +596,9 @@
     "shape": "Full",
     "pattern": "Hollow",
     "color": [
-     221,
-     221,
-     221
+     222,
+     226,
+     232
     ]
    },
    "end": {
@@ -652,9 +652,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     127,
-     127,
-     127
+     110,
+     120,
+     135
     ]
    },
    "end": {
@@ -695,9 +695,9 @@
     "shape": "None",
     "kind": "Solid",
     "color": [
-     221,
-     221,
-     221
+     222,
+     226,
+     232
     ]
    },
    "middle": {
@@ -747,27 +747,27 @@
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     221,
-     221,
-     221
+     222,
+     226,
+     232
     ]
    },
    "middle": {
     "shape": "LineTop",
     "pattern": "Solid",
     "color": [
-     221,
-     221,
-     221
+     222,
+     226,
+     232
     ]
    },
    "end": {
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     221,
-     221,
-     221
+     222,
+     226,
+     232
     ]
    }
   },
@@ -807,27 +807,27 @@
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "middle": {
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     116,
-     204,
-     212
+     180,
+     156,
+     248
     ]
    },
    "end": {
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    }
   },
@@ -880,9 +880,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "end": {
@@ -927,9 +927,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "middle": {
@@ -996,9 +996,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     116,
-     204,
-     212
+     180,
+     156,
+     248
     ]
    },
    "end": {
@@ -1052,9 +1052,9 @@
     "shape": "Bottom",
     "pattern": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "end": {
@@ -1103,27 +1103,27 @@
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "middle": {
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     116,
-     204,
-     212
+     180,
+     156,
+     248
     ]
    },
    "end": {
     "shape": "Line",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    }
   },
@@ -1176,9 +1176,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "end": {
@@ -1223,9 +1223,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "middle": {
@@ -1288,9 +1288,9 @@
     "shape": "Bottom",
     "pattern": "Solid",
     "color": [
-     255,
-     0,
-     0
+     200,
+     40,
+     50
     ]
    },
    "end": {
@@ -1332,30 +1332,30 @@
   "to": "Finish",
   "bar": {
    "start": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     109,
+     63,
+     217
     ]
    },
    "middle": {
-    "shape": "LineTop",
+    "shape": "Top",
     "pattern": "Solid",
     "color": [
-     84,
-     84,
-     84
+     109,
+     63,
+     217
     ]
    },
    "end": {
-    "shape": "Line",
+    "shape": "Circle",
     "kind": "Solid",
     "color": [
-     84,
-     84,
-     84
+     109,
+     63,
+     217
     ]
    }
   },
@@ -1391,9 +1391,9 @@
     "shape": "None",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "middle": {
@@ -1465,9 +1465,9 @@
     "shape": "None",
     "kind": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    }
   },
@@ -1507,9 +1507,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     206,
-     217,
-     232
+     196,
+     214,
+     240
     ]
    },
    "middle": {
@@ -1563,9 +1563,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     206,
-     217,
-     232
+     196,
+     214,
+     240
     ]
    },
    "middle": {
@@ -1619,9 +1619,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
-     206,
-     217,
-     232
+     196,
+     214,
+     240
     ]
    },
    "middle": {
@@ -1692,9 +1692,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     116,
-     204,
-     212
+     180,
+     156,
+     248
     ]
    },
    "end": {
@@ -1744,9 +1744,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
+     190,
      198,
-     198,
-     198
+     208
     ]
    },
    "end": {
@@ -1787,9 +1787,9 @@
     "shape": "Diamond",
     "kind": "Solid",
     "color": [
+     190,
      198,
-     198,
-     198
+     208
     ]
    },
    "middle": {
@@ -1830,9 +1830,9 @@
     "shape": "ArrowDown",
     "kind": "Solid",
     "color": [
-     141,
-     190,
-     76
+     31,
+     157,
+     85
     ]
    },
    "middle": {
@@ -1895,9 +1895,9 @@
     "shape": "Full",
     "pattern": "Solid",
     "color": [
-     247,
-     138,
-     136
+     238,
+     106,
+     112
     ]
    },
    "end": {
@@ -1955,9 +1955,9 @@
     "shape": "LineBottom",
     "pattern": "Vertical",
     "color": [
-     247,
-     138,
-     136
+     238,
+     106,
+     112
     ]
    },
    "end": {
@@ -2007,9 +2007,9 @@
     "shape": "Middle",
     "pattern": "Solid",
     "color": [
-     59,
-     135,
-     212
+     29,
+     79,
+     153
     ]
    },
    "end": {
@@ -2059,9 +2059,9 @@
     "shape": "Middle",
     "pattern": "Solid",
     "color": [
-     43,
-     163,
-     173
+     109,
+     63,
+     217
     ]
    },
    "end": {

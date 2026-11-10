@@ -1,28 +1,24 @@
-Neramit Planner 1.1.0 - for Thai users
-- Add Thai holidays: public holidays and substitution days for every year of the project (Buddhist holidays built in for 2025-2027; add other years in thai-holidays.txt)
-- Work week presets: Office (Mon-Fri), Construction site (Mon-Sat)
-- New S-Curve report: cumulative planned vs actual progress, weighted by cost, work or duration, with period and phase tables you can copy to Excel
-- New plans use baht for Thai users; money follows the project's currency options
-- Sort by name in Thai dictionary order
-- Excel export uses Leelawadee UI for Thai text
-- Copy Picture / Save Picture (View and Report tabs): the view as an image for LINE, e-mail or documents, or a PNG file
-- Printing and PDF: company, project manager and "status as of" line, full printed date, and Prepared / Checked / Approved signature boxes
-- Cost reports show the total in Thai words (baht text)
-- Import BOQ (Project tab): a bill of quantities in Excel or CSV becomes the task outline with amounts as fixed cost; Thai headers (ปร.4, two-row headers) are found automatically and can be changed
-- Payment Schedule (Project tab, Report > Costs): installments tied to milestones, advance payment and retention, status, net amounts and money in against cost out; saved in .neramit, .mpp and .xml
-- MCP: import_boq, payment_schedule and set_payment_schedule
+Neramit Planner 1.1.0
+- A new icon set of its own: rounded shapes with one line weight, task bars drawn as rounded bars, and a round corner badge for the action (add, confirm, remove, send out). Progress is shown as filled bars, Clear as an eraser, Format Painter as a paint roller
+- Brighter, two-tone icon colours: each colour has a light fill and a deeper outline; milestones are orange, AI is purple
+- Lighter icons: thinner lines, slimmer bars and smaller corner badges, so icons stay clear at small sizes; greyed-out icons keep their outline look
+- New default Gantt colours for new plans: blue task bars with deep-blue progress, summary bars with round ends, orange milestones, violet manual tasks
+- Gantt Chart Style gallery: six colour schemes of its own, each shown as a summary, a task bar and a milestone
+- Timeline: rounded track and bars in soft colours, start and finish dates as chips, Today marked in orange
+- The view's name no longer runs down the left edge; a slim green stripe marks the view instead (the view is shown on the ribbon)
+- Clearer names: Task Details, Resource Details, Project Details, Working Days & Holidays; the status bar says "New tasks: Auto Schedule"
+- About and the license now say that Microsoft and Microsoft Project are trademarks of Microsoft Corporation and that Neramit Planner is not affiliated with Microsoft
+- Installed and portable updates can replace and restore program files when the user has Modify permission without permission to change file ACLs
 
 ---
-Neramit Planner 1.1.0 - สำหรับผู้ใช้ไทย
-- เพิ่มวันหยุดไทย: วันหยุดนักขัตฤกษ์และวันหยุดชดเชยทุกปีตลอดช่วงโครงการ (มีวันหยุดทางพุทธศาสนาปี 2568-2570 ในตัว ปีอื่นเพิ่มได้ในไฟล์ thai-holidays.txt)
-- แบบสำเร็จรูปวันทำงาน: สำนักงาน (จ.-ศ.) และไซต์ก่อสร้าง (จ.-ส.)
-- รายงานใหม่ กราฟ S-Curve: ผลงานตามแผนสะสมเทียบผลงานจริง ถ่วงน้ำหนักตามค่างาน ชั่วโมงงาน หรือระยะเวลา พร้อมตารางรายงวดและรายหมวดงานที่คัดลอกไป Excel ได้
-- โครงการใหม่ของผู้ใช้ไทยใช้สกุลเงินบาท และเงินแสดงตามตัวเลือกสกุลเงินของโครงการ
-- เรียงตามชื่อตามลำดับพจนานุกรมไทย
-- ส่งออก Excel ที่มีภาษาไทยใช้ฟอนต์ Leelawadee UI
-- คัดลอก/บันทึกเป็นรูปภาพ (แท็บมุมมอง และแท็บรายงาน): มุมมองบนจอเป็นรูปภาพ วางใน LINE อีเมล หรือเอกสาร หรือบันทึกเป็น PNG
-- งานพิมพ์และ PDF: บรรทัดชื่อบริษัท ผู้จัดการโครงการ ข้อมูล ณ วันที่ วันที่พิมพ์แบบเต็ม และช่องลงนาม ผู้จัดทำ/ผู้ตรวจสอบ/ผู้อนุมัติ
-- รายงานต้นทุนแสดงยอดเงินเป็นตัวหนังสือ (บาทถ้วน)
-- นำเข้า BOQ (แท็บโครงการ): บัญชีปริมาณงาน Excel หรือ CSV เป็นโครงร่างงาน พร้อมจำนวนเงินเป็นต้นทุน หาหัวตารางไทย (ปร.4 หัวตาราง 2 แถว) ให้เองและแก้ได้
-- งวดงาน/งวดเงิน (แท็บโครงการ และรายงาน > ต้นทุน): งวดผูกกับเหตุการณ์สำคัญ เงินล่วงหน้า เงินประกันผลงาน สถานะ ยอดสุทธิ และเงินรับเทียบต้นทุน บันทึกใน .neramit .mpp และ .xml
-- MCP: import_boq, payment_schedule และ set_payment_schedule
+Neramit Planner 1.1.0
+- ไอคอนชุดใหม่ของโปรแกรมเอง: รูปทรงโค้งมน เส้นหนาเท่ากันทุกตัว แถบงานเป็นแท่งมน และมีป้ายวงกลมมุมขวาล่างบอกการทำงาน (เพิ่ม ยืนยัน ลบ ส่งออก) ความคืบหน้าแสดงเป็นแถบ ปุ่มล้างเป็นยางลบ และตัวคัดลอกรูปแบบเป็นลูกกลิ้งสี
+- สีไอคอนสดใสขึ้นแบบสองโทน: แต่ละสีมีพื้นสีอ่อนและขอบสีเข้ม เป้าหมายสำคัญ (Milestone) เป็นสีส้ม และ AI เป็นสีม่วง
+- ไอคอนเบาตาขึ้น: เส้นบางลง แท่งงานเพรียวขึ้น และป้ายมุมเล็กลง ดูชัดแม้ขนาดเล็ก ไอคอนที่ใช้ไม่ได้ (สีเทา) ยังคงเห็นเป็นเส้นขอบ
+- สีแผนภูมิแกนต์เริ่มต้นใหม่สำหรับแผนงานใหม่: แท่งงานสีฟ้า ความคืบหน้าสีน้ำเงินเข้ม แท่งงานสรุปปลายมน เป้าหมายสำคัญสีส้ม และงานที่กำหนดเองสีม่วง
+- แกลเลอรีสไตล์แผนภูมิแกนต์: ชุดสีใหม่ 6 แบบ แต่ละแบบแสดงตัวอย่างงานสรุป แท่งงาน และเป้าหมายสำคัญ
+- ไทม์ไลน์: แถบและแท่งงานโค้งมนสีอ่อน วันเริ่มและวันสิ้นสุดเป็นป้ายวันที่ และวันนี้แสดงเป็นสีส้ม
+- เอาชื่อมุมมองแนวตั้งด้านซ้ายออก ใช้แถบสีเขียวบาง ๆ แทน (ชื่อมุมมองดูได้จากริบบอน)
+- ชื่อหน้าต่างภาษาอังกฤษชัดขึ้น (Task Details, Resource Details, Project Details) และ "เปลี่ยนเวลาทำงาน" เปลี่ยนชื่อเป็น "วันทำงานและวันหยุด"
+- หน้าเกี่ยวกับโปรแกรมและข้อตกลงการใช้งานระบุว่า Microsoft และ Microsoft Project เป็นเครื่องหมายการค้าของ Microsoft Corporation และ Neramit Planner ไม่มีส่วนเกี่ยวข้องกับ Microsoft
+- แก้การแทนไฟล์และคืนไฟล์สำรองของอัปเดต ทั้งรุ่นติดตั้งและ Portable เมื่อผู้ใช้มีสิทธิ์แก้ไขไฟล์ แต่ไม่มีสิทธิ์เปลี่ยน ACL

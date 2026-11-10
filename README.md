@@ -1,4 +1,4 @@
-# Neramit Planner 1.0
+# Neramit Planner 1.1.0
 
 โปรแกรมวางแผนงานโครงการแบบออฟไลน์พร้อม Gantt Chart เขียนด้วยภาษา Rust
 เปิด แก้ไข และบันทึกไฟล์ .mpp / .mpt และ XML ได้โดยตรง ไม่ต้อง Login ใช้แบบ exe ไฟล์เดียว หรือติดตั้งด้วย `NeramitPlanner-Setup.exe` (ไม่ต้องใช้สิทธิ์ Admin)
@@ -154,7 +154,7 @@ claude mcp add --scope user neramit-planner -- "%LOCALAPPDATA%\Programs\Neramit 
 
 ออกเวอร์ชันใหม่:
 
-1. เพิ่ม `version` ใน `Cargo.toml` และ `installer/Cargo.toml` ให้ตรงกัน (เช่น `1.0.1`) แล้ว build และทดสอบโปรแกรมใหม่
+1. เพิ่ม `version` ใน `Cargo.toml` และ `installer/Cargo.toml` ให้ตรงกัน (เช่น `1.1.0`) แล้ว build และทดสอบโปรแกรมใหม่
 2. build installer หลัง build โปรแกรมเสร็จ: `cargo build --release --locked --manifest-path installer/Cargo.toml`
 3. เขียน `dist/notes-<version>.txt` (ภาษาอังกฤษ / บรรทัด `---` / ภาษาไทย)
 4. ติดตั้ง Python dependency ครั้งแรก: `python -m pip install cryptography`
@@ -169,7 +169,22 @@ claude mcp add --scope user neramit-planner -- "%LOCALAPPDATA%\Programs\Neramit 
 หรืออัปโหลดไฟล์ชุดเดียวกันผ่านหน้า GitHub Releases ด้วยตนเอง โดยใช้แท็ก `v<version>` และกำหนดเป็น Latest release
 
 ระบบอัปเดตอ่าน `latest.json` จาก Release ล่าสุด ดังนั้นต้องแนบไฟล์นี้และไฟล์ `.exe` ชื่อดังกล่าวทุกครั้ง
-การ push ซอร์สโค้ดเพียงอย่างเดียวยังไม่ออกเวอร์ชันใหม่ และไม่มี workflow ที่เผยแพร่หรือใช้กุญแจลับโดยอัตโนมัติ
+การ push ซอร์สโค้ดไป `main` เรียก workflow **Windows build and test** เพื่อตรวจและสร้างโปรแกรมกับตัวติดตั้ง ไฟล์ CI เหล่านี้ยังไม่มี manifest อัปเดตที่ลงลายเซ็น การ push ซอร์สเพียงอย่างเดียวจึงยังไม่ออกเวอร์ชันใหม่
+
+อีกวิธีหนึ่งคือเผยแพร่ผ่าน GitHub Actions หลัง build, sign และ verify ในเครื่องแล้ว โดยใช้ branch `release/v<version>` ที่เลขรุ่นตรงกับ Cargo ทั้งสองไฟล์ ตัวอย่างสำหรับ `1.1.0` หลัง commit และ push ซอร์สล่าสุดบน `main` แล้ว:
+
+```powershell
+git switch main
+git switch -c release/v1.1.0
+python tools/release.py verify
+git add -f dist/1.1.0
+git commit -m "Package signed Neramit Planner 1.1.0 update"
+git push -u origin release/v1.1.0
+```
+
+หยุดเมื่อ `verify` ไม่ผ่าน และเปลี่ยนเลขรุ่นในตัวอย่างสำหรับการเผยแพร่ครั้งถัดไป Workflow **Publish signed update** ตรวจชื่อ branch และลายเซ็นของไฟล์ทั้งห้าก่อนเรียก `tools/release.py publish` ด้วย `GITHUB_TOKEN` ของ workflow ที่มีสิทธิ์ Contents: write โดย tag ชี้ไปยัง commit ชุดแพ็กเกจ ไม่ build ไฟล์ซ้ำและไม่ใช้กุญแจลับใน GitHub สามารถสั่งรัน workflow นี้ซ้ำจาก branch รุ่นเดียวกันเพื่อทำ Draft ที่ขาดช่วงต่อได้ รุ่นที่เผยแพร่แล้วจะถูกปฏิเสธ
+
+เก็บ `dist/<version>` ไว้บน branch เผยแพร่ และไม่ merge ไฟล์ชุดนี้กลับ `main` เพื่อให้ซอร์สหลักไม่มีไฟล์โปรแกรมที่สร้างแล้ว ตรวจผล workflow และหน้า Releases ก่อนแจ้งผู้ใช้
 
 กุญแจลับต้องสำรองไว้และห้ามอัปโหลด เครื่องมือจะปฏิเสธกุญแจที่ไม่ตรงกับ public key ในโปรแกรม
 ถ้ากุญแจหาย โปรแกรมที่แจกไปแล้วจะรับอัปเดตที่ลงลายเซ็นด้วยกุญแจใหม่ไม่ได้
@@ -185,11 +200,30 @@ claude mcp add --scope user neramit-planner -- "%LOCALAPPDATA%\Programs\Neramit 
 
 ## Build
 
-ใช้ Rust toolchain `x86_64-pc-windows-gnu` ใน `E:\REA\.toolchains`:
+สำหรับเครื่อง Windows 64 บิตทั่วไป ติดตั้ง Rust ผ่าน rustup และ MSYS2 พร้อมแพ็กเกจ `mingw-w64-x86_64-gcc` ใน MINGW64 แล้วเปิด PowerShell ที่โฟลเดอร์โปรเจกต์:
+
+```powershell
+rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal
+$env:RUSTUP_TOOLCHAIN = 'stable-x86_64-pc-windows-gnu'
+$env:Path = "C:\msys64\mingw64\bin;$env:Path"
+$env:WINDRES = 'C:\msys64\mingw64\bin\windres.exe'
+$env:AR = 'C:\msys64\mingw64\bin\ar.exe'
+cargo test --release --locked
+cargo build --release --locked
+cargo test --manifest-path installer/Cargo.toml --release --locked
+cargo build --manifest-path installer/Cargo.toml --release --locked
+```
+
+แก้เส้นทาง MSYS2 ให้ตรงกับเครื่อง และ build โปรแกรมก่อน build หรือทดสอบ installer เพราะ installer ฝัง `target/release/NeramitPlanner.exe` ไว้ภายใน ผลลัพธ์อยู่ที่ `target/release/NeramitPlanner.exe` และ `installer/target/release/NeramitPlanner-Setup.exe`
+
+ต้องเก็บ `assets/`, `examples/sample.neramit` และ `libs/` ไว้ด้วย: ฟอนต์ รูปแบบแท่ง Gantt ภาพ ตัวอย่างโครงการ และแม่แบบ MPP ถูกฝังในโปรแกรม ส่วน `libs/` มี import library สำหรับ GNU toolchain
+
+สำหรับ workspace นี้ ใช้ Rust toolchain `x86_64-pc-windows-gnu` ใน `E:\REA\.toolchains` ได้ตามเดิม:
 
 ```powershell
 $env:CARGO_HOME='E:\REA\.toolchains\rust\cargo'
 $env:RUSTUP_HOME='E:\REA\.toolchains\rust\rustup'
+$env:RUSTUP_TOOLCHAIN='stable-x86_64-pc-windows-gnu'
 $env:Path="E:\REA\.toolchains\rust\cargo\bin;E:\REA\.toolchains\binutils\mingw64\bin;$env:Path"
 $env:WINDRES='E:\REA\.toolchains\binutils\windres-wrapper.exe'
 $env:AR='E:\REA\.toolchains\binutils\mingw64\bin\ar.exe'
@@ -246,3 +280,5 @@ Ctrl+ล้อเมาส์ (Zoom timescale), Shift+ล้อเมาส์ (
 ---
 
 © 2026 Neramit Planner Made by BiGByte Studio
+
+Microsoft และ Microsoft Project เป็นเครื่องหมายการค้าของ Microsoft Corporation โดย Neramit Planner ไม่มีความเกี่ยวข้อง ไม่ได้รับการรับรองหรือการสนับสนุนจาก Microsoft

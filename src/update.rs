@@ -20,6 +20,7 @@ use windows_sys::Win32::Security::Cryptography::{
     BCryptCloseAlgorithmProvider, BCryptDestroyKey, BCryptHash, BCryptImportKeyPair, BCryptOpenAlgorithmProvider, BCryptVerifySignature,
     BCRYPT_ECCPUBLIC_BLOB, BCRYPT_ECDSA_P256_ALGORITHM, BCRYPT_ECDSA_PUBLIC_P256_MAGIC, BCRYPT_SHA256_ALG_HANDLE,
 };
+use windows_sys::Win32::Storage::FileSystem::{ReplaceFileW, REPLACEFILE_IGNORE_ACL_ERRORS};
 
 /// Where releases are published; `NERAMIT_UPDATE_BASE` points elsewhere for tests (http allowed).
 const REPO_URL: &str = "https://github.com/BiG-byt3/Neramit-Planner";
@@ -339,8 +340,10 @@ fn replace_portable(source: &Path, target: &Path, artifact: &Artifact) -> Result
         drop(file);
         validate_data(&std::fs::read(&staged).map_err(|e| e.to_string())?, artifact)?;
         let (dest, src, old) = (wide(&target.to_string_lossy()), wide(&staged.to_string_lossy()), wide(&backup.to_string_lossy()));
+        // Staged siblings inherit this directory's ACL. Modify permission must suffice
+        // even when the user cannot merge the old file's ACL.
         // SAFETY: NUL-terminated paths outlive the call and are all on the same filesystem.
-        if unsafe { windows_sys::Win32::Storage::FileSystem::ReplaceFileW(dest.as_ptr(), src.as_ptr(), old.as_ptr(), 0, std::ptr::null(), std::ptr::null()) } == 0 {
+        if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), old.as_ptr(), REPLACEFILE_IGNORE_ACL_ERRORS, std::ptr::null(), std::ptr::null()) } == 0 {
             let error = std::io::Error::last_os_error();
             if !target.exists() && backup.is_file() {
                 if let Err(recovery) = std::fs::rename(&backup, target) {
@@ -362,7 +365,7 @@ fn restore_portable(target: &Path, backup: &Path) -> Result<(), String> {
     }
     let (dest, src) = (wide(&target.to_string_lossy()), wide(&backup.to_string_lossy()));
     // SAFETY: NUL-terminated paths outlive the call; no additional backup is requested.
-    if unsafe { windows_sys::Win32::Storage::FileSystem::ReplaceFileW(dest.as_ptr(), src.as_ptr(), std::ptr::null(), 0, std::ptr::null(), std::ptr::null()) } == 0 {
+    if unsafe { ReplaceFileW(dest.as_ptr(), src.as_ptr(), std::ptr::null(), REPLACEFILE_IGNORE_ACL_ERRORS, std::ptr::null(), std::ptr::null()) } == 0 {
         return Err(std::io::Error::last_os_error().to_string());
     }
     Ok(())

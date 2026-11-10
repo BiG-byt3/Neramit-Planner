@@ -232,7 +232,7 @@ pub fn show(app: &mut App, ctx: &egui::Context, mut st: TaskInfoState) -> Option
     crate::theme::modal(egui::Id::unique("task_info")).show(ctx, |ui| {
         crate::theme::dialog_spacing(ui);
         ui.set_width(580.0);
-        let caption = if multi { "Multiple Task Information" } else if is_sum { "Summary Task Information" } else { "Task Information" };
+        let caption = if multi { "Multiple Task Details" } else if is_sum { "Summary Task Details" } else { "Task Details" };
         ui.label(RichText::new(tr(caption)).strong().size(14.0));
         ui.add_space(6.0);
         ui.horizontal(|ui| {
@@ -296,7 +296,7 @@ pub fn show(app: &mut App, ctx: &egui::Context, mut st: TaskInfoState) -> Option
                         done = Some(true);
                     }
                 }
-                if ui.add(egui::Button::new(tr("Project Information...")).min_size(Vec2::new(140.0, 26.0))).clicked() {
+                if ui.add(egui::Button::new(tr("Project Details...")).min_size(Vec2::new(140.0, 26.0))).clicked() {
                     open_project_info = true;
                 }
             });

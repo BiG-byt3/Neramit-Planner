@@ -1169,11 +1169,11 @@ fn tab_spec(app: &App) -> Vec<(&'static str, Vec<It>)> {
             (
                 "Properties",
                 vec![
-                    l("Project\nInformation", Some(Cmd::ProjectInfo), true),
+                    l("Project\nDetails", Some(Cmd::ProjectInfo), true),
                     l("Custom\nFields", Some(Cmd::CustomFields), true),
                     l("Manage\nSprints", Some(Cmd::ManageSprints), true),
                     l("Payment\nSchedule", Some(Cmd::Payments), true),
-                    It::Col(vec![s("Links Between Projects...", Some(Cmd::ProjectLinks), true), sm("WBS", "wbs", true), s("Change Working Time...", Some(Cmd::WorkingTime), true)]),
+                    It::Col(vec![s("Links Between Projects...", Some(Cmd::ProjectLinks), true), sm("WBS", "wbs", true), s("Working Days & Holidays...", Some(Cmd::WorkingTime), true)]),
                 ],
             ),
             ("Schedule", vec![l("Calculate\nProject", Some(Cmd::Calculate), true), It::Col(vec![sm("Set Baseline", "baseline", true), s("Move Project", Some(Cmd::MoveProject), true)])]),
@@ -1332,8 +1332,8 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
         "Resource Sheet" => Some(Icon::ResourceSheet),
         "Assign Resources" => Some(Icon::AssignRes),
         "Add Resources" => Some(Icon::AddRes),
-        "Project Information" => Some(Icon::ProjectInfo),
-        "Change Working Time..." => Some(Icon::Calendar),
+        "Project Details" => Some(Icon::ProjectInfo),
+        "Working Days & Holidays..." => Some(Icon::Calendar),
         "Calculate Project" => Some(Icon::Calculate),
         "Entire Project" => Some(Icon::Entire),
         "Selected Tasks" => Some(Icon::Selected),
@@ -1341,7 +1341,7 @@ fn draw_icon(p: &egui::Painter, r: Rect, label: &str, enabled: bool) {
         "Dashboards" => Some(Icon::Report),
         "Zoom" | "Zoom In" | "Zoom..." => Some(Icon::ZoomIn),
         "Zoom Out" => Some(Icon::ZoomOut),
-        "Change Working Time" => Some(Icon::Calendar),
+        "Working Days & Holidays" => Some(Icon::Calendar),
         "Export Data" => Some(Icon::Export),
         _ => None,
     };
@@ -1527,23 +1527,21 @@ fn item(ui: &mut Ui, it: &It, cmds: &mut Vec<Cmd>, app: &mut App) {
             }
             let sel = app.doc.formatting.gallery as usize;
             p.rect_stroke(r.shrink2(Vec2::new(0.0, 6.0)), 2.0, Stroke::new(1.0_f32, Color32::from_rgb(0xD8, 0xD8, 0xD8)), egui::StrokeKind::Inside);
-            let colors = [
-                (Color32::from_rgb(0x8C, 0xB4, 0xE6), Color32::from_rgb(0x41, 0x7A, 0xC0)),
-                (Color32::from_rgb(0x9C, 0xD0, 0x9A), Color32::from_rgb(0x2E, 0x77, 0x32)),
-                (Color32::from_rgb(0xF4, 0xB1, 0x83), Color32::from_rgb(0xC5, 0x5A, 0x11)),
-                (Color32::from_rgb(0xC9, 0xC9, 0xC9), Color32::from_rgb(0x59, 0x59, 0x59)),
-                (Color32::from_rgb(0xB4, 0xA7, 0xD6), Color32::from_rgb(0x67, 0x4E, 0xA7)),
-                (Color32::from_rgb(0x9F, 0xD5, 0xE6), Color32::from_rgb(0x1F, 0x86, 0xA8)),
-            ];
-            for (k, (fill, edge)) in colors.iter().enumerate() {
+            // each scheme: a summary band with round ends over a task bar and a milestone
+            for (k, (fill, dark)) in crate::fmt_dialogs::GALLERY.iter().enumerate() {
+                let (fill, dark) = (theme::rgb(*fill), theme::rgb(*dark));
+                let ms = if k == 0 { theme::rgb(crate::fmt_dialogs::MILESTONE_ORANGE) } else { dark };
                 let x = r.left() + 8.0 + (k % 3) as f32 * 56.0;
                 let y = r.top() + 14.0 + (k / 3) as f32 * 24.0;
-                let a = Rect::from_min_size(egui::pos2(x, y), Vec2::new(30.0, 6.0));
-                let b = Rect::from_min_size(egui::pos2(x + 12.0, y + 9.0), Vec2::new(32.0, 6.0));
-                for bar in [a, b] {
-                    p.rect_filled(bar, 1.0, *fill);
-                    p.rect_stroke(bar, 1.0, Stroke::new(1.0_f32, *edge), egui::StrokeKind::Inside);
-                }
+                let band = Rect::from_min_size(egui::pos2(x + 1.0, y), Vec2::new(40.0, 4.0));
+                p.rect_filled(band, 2.0, dark);
+                p.circle_filled(band.left_center(), 2.6, dark);
+                p.circle_filled(band.right_center(), 2.6, dark);
+                let bar = Rect::from_min_size(egui::pos2(x + 4.0, y + 8.0), Vec2::new(26.0, 7.0));
+                p.rect_filled(bar, 3.5, fill);
+                let c = egui::pos2(x + 38.0, y + 11.5);
+                let d = 4.0;
+                p.add(egui::Shape::convex_polygon(vec![c + Vec2::new(0.0, -d), c + Vec2::new(d, 0.0), c + Vec2::new(0.0, d), c + Vec2::new(-d, 0.0)], ms, Stroke::NONE));
                 if k == sel {
                     p.rect_stroke(Rect::from_min_size(egui::pos2(x - 4.0, y - 4.0), Vec2::new(52.0, 23.0)), 2.0, Stroke::new(1.0_f32, theme::ACCENT), egui::StrokeKind::Inside);
                 }
@@ -2482,6 +2480,14 @@ pub fn credit_lines(ui: &mut Ui) {
     ui.label(egui::RichText::new(format!("© 2026 {}", crate::thai::shape(crate::app::DESIGNER))).color(theme::TEXT_DIM));
 }
 
+/// Third-party trademark notice shown at the bottom of both About screens.
+pub fn trademark_note(ui: &mut Ui) {
+    ui.add_space(8.0);
+    ui.label(egui::RichText::new(tr(TRADEMARK_NOTE)).small().color(theme::TEXT_DIM));
+}
+
+pub const TRADEMARK_NOTE: &str = "Microsoft and Microsoft Project are trademarks of Microsoft Corporation. Neramit Planner is not affiliated with, endorsed or sponsored by Microsoft.";
+
 fn home_page(app: &mut App, ui: &mut Ui, content: Rect, cmds: &mut Vec<Cmd>, title: &str) {
     let p = ui.painter().clone();
     // footer: product, version and maker credit
@@ -2755,7 +2761,7 @@ pub fn backstage(app: &mut App, ui: &mut Ui, cmds: &mut Vec<Cmd>) {
                 }
             });
             ui.add_space(16.0);
-            if ui.button(tr("Project Information...")).clicked() {
+            if ui.button(tr("Project Details...")).clicked() {
                 app.backstage = None;
                 cmds.push(Cmd::ProjectInfo);
             }
@@ -2840,6 +2846,7 @@ pub fn backstage(app: &mut App, ui: &mut Ui, cmds: &mut Vec<Cmd>) {
             ui.add_space(6.0);
             ui.label(tr("Offline project scheduling and Gantt chart tool written in Rust."));
             ui.label(tr("No sign-in required. Opens .neramit, .mpp and XML files; saves .neramit, .mpp, XML, CSV, PDF and Excel."));
+            trademark_note(ui);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿Neramit Planner 1.0.1 - third-party components
+﻿Neramit Planner 1.1.0 - third-party components
 
 Neramit Planner is built with the following open-source Rust crates (name, version, licence).
 Where a crate offers a choice of licences, Neramit Planner uses it under the first permissive one

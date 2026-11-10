@@ -18,7 +18,7 @@ pub const ROW_H: f32 = 23.0;
 pub const HEADER_H: f32 = 40.0;
 pub const ID_W: f32 = 34.0;
 /// width of the vertical view-name bar left of the sheet (MPP: 25 px)
-pub const VIEW_BAR_W: f32 = 25.0;
+pub const VIEW_BAR_W: f32 = 4.0;
 pub const SCROLLBAR: f32 = 14.0;
 const MAX_WRAP_LINES: usize = 12;
 
